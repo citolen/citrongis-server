@@ -1,0 +1,17 @@
+UpdateInstaller
+	- Script used to manage config installation on CitronGIS local server.
+
+
+
+V0.1:
+	First build version commit on 13/01/2014.
+	
+	Summary :
+		It's work, it's can be used for basic instalation but need to be a litle upgraded.
+
+	Feature :
+		- Create file for current version installed
+		- List and Install uninstalled file located in the update-file folders
+
+	Known bug :
+	      	- Crash when scrit instalation fail, due to a bad exec library
