@@ -4,7 +4,7 @@ UpdateInstaller
 
 
 V0.1:
-	First build version commit on 13/01/2014.
+	First build version commit on 13/04/2014.
 	
 	Summary :
 		It's work, it's can be used for basic instalation but need to be a litle upgraded.
@@ -15,3 +15,14 @@ V0.1:
 
 	Known bug :
 	      	- Crash when scrit instalation fail, due to a bad exec library
+
+
+		  	     	   -----------
+
+V0.2:
+	Second build version commit on 17/04/2014
+	
+	Summary :
+		Bug fix :
+		    - Fix chmod bug with wrong mode id 
+		    - Set valide path for installer

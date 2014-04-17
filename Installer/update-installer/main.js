@@ -6,9 +6,8 @@ var C_checker = new F_CCChecker();
 var C_reader = new F_CFReader();
 var C_installer = new F_CInstaller();
 
-//Temporary Path, need to be reset when deploy on CitronGis-Server.
-var GitUpdatePath = "/home/pretotn/git/citrongis-server/Installer/update-file/";
-var ConfigFilePath = "/home/pretotn/.cconfig"; 
+var GitUpdatePath = "/home/dev/git/citrongis-server/Installer/update-file/";
+var ConfigFilePath = "/home/dev/.cconfig"; 
 
 function main() 
 {

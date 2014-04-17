@@ -9,7 +9,7 @@ CInstaller.prototype.install = function(file) {
     // Run script file
     if (file.split(".")[1] == "sh")
     {
-	fs.chmodSync(file, 755);
+	fs.chmodSync(file, 0755);
 	sh(file);
 	return true;
     } else {
