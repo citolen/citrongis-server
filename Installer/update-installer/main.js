@@ -7,7 +7,7 @@ var C_reader = new F_CFReader();
 var C_installer = new F_CInstaller();
 
 var GitUpdatePath = "/home/dev/git/citrongis-server/Installer/update-file/";
-var ConfigFilePath = "/home/dev/.cconfig/.cconfig"; 
+var ConfigFilePath = "/home/dev/.cconfig/cconfig"; 
 
 function main() 
 {
