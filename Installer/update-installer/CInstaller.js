@@ -1,4 +1,4 @@
-var sh = require('exec-sync');
+var sh = require('child_process').execFile;
 var fs = require('fs');
 
 function CInstaller() {
@@ -10,7 +10,7 @@ CInstaller.prototype.install = function(file) {
     if (file.split(".")[1] == "sh")
     {
 	fs.chmodSync(file, 0755);
-	sh(file);
+	var script = sh(file);
 	return true;
     } else {
 	return false;
