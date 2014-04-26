@@ -10,9 +10,13 @@ CInstaller.prototype.install = function(file) {
     if (file.split(".")[1] == "sh")
     {
 	fs.chmodSync(file, 0755);
-	var script = sh(file);
+	var script = sh(file, null, function(err, sdout, stderr) 
+			{
+			    console.log("Current install done !");
+			});
 	script.stdout.on('data', function(data) {
 	    console.log(data.toString());
+	    console.log("Some install remaining, wait ...");
 	});
 	return true;
     } else {
