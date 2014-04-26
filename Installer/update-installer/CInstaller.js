@@ -11,6 +11,9 @@ CInstaller.prototype.install = function(file) {
     {
 	fs.chmodSync(file, 0755);
 	var script = sh(file);
+	script.stdout.on('data', function(data) {
+	    console.log(data.toString());
+	});
 	return true;
     } else {
 	return false;
