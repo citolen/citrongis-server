@@ -1,8 +1,6 @@
 # Creating autologin script
-echo "
-#!/bin/bash
-exec login -f dev
-" > autologin
+echo "#!/bin/bash
+exec login -f dev" > autologin
 echo dev | sudo -S mv autologin /sbin/autologin
 echo dev | sudo -S chmod 755 /sbin/autologin
 
