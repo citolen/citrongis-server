@@ -47,3 +47,28 @@ V0.3:
 
 	Known bug : 
 	      Return value of childProcess not checked
+
+
+
+		  	     	   -----------
+
+
+V0.4:
+	Commit : 25/04/2014 - 27/04/2014
+
+	Summary :
+		Add modification to the installer and somme script was added
+
+	Feature :
+		Installer :
+			  - Add a display Log function to the installer.
+		Script :
+		          - Add Script for AutoLogin instalation
+			  - Add Script for GitReset Feature
+			  - Add Script for Installing apache2
+		Config :
+		          - Auto login
+			  - commad rebuild-config available to rebuild git, and reset .cconfig file (don't reset the configuration but add a sort of "repair" feature)
+	
+	IMPORTANT Remaining task :
+		Change the networking configuration to be able to ping the VM with host (the vm still need to have an internet access)
