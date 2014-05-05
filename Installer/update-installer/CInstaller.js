@@ -15,8 +15,7 @@ CInstaller.prototype.install = function(file) {
 			    console.log("Current install done !");
 			});
 	script.stdout.on('data', function(data) {
-	    console.log(data.toString());
-	    console.log("Some install remaining, wait ...");
+	    process.stdout.write(data.toString());
 	});
 	return true;
     } else {
