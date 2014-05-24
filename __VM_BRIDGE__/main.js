@@ -1,3 +1,11 @@
+/*************************************************************************
+**									**
+**									**
+**		USED TO TEST CITRONGIS SERVER COMPATIBILITY		**
+**									**
+**									**
+*************************************************************************/
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var multiparty = require('multiparty')
@@ -39,10 +47,7 @@ app.post('/upload_file', function(req, res){
       console.log(files);
       res.writeHead(200, {'content-type': 'text/plain'});
       res.write('received upload:\n\n');
-      //res.end(util.inspect({fields: fields, files: files}));
     });
-	//console.log(req.body);
-   //res.end();
 });
 
 
@@ -51,21 +56,4 @@ app.post('/', function(req, res, next){
     res.send("TEST");
     res.end();
 });
-
-/*
-MongoClient.connect('mongodb://127.0.0.1:27017/eip', function(err, db) {
-    if(err) throw err;
-
-    var collection = db.collection('document_info');
-    collection.insert({a:5}, function(err, docs) {
-
-      // Locate all the entries using find
-      collection.find().toArray(function(err, results) {
-        console.dir(results);
-        // Let's close the db
-        db.close();
-      });
-    });
-  })
-*/
 app.listen(8080);
