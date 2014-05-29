@@ -13,10 +13,10 @@ Extenssion.prototype.formatToDB = function() {
 }
 
 Extenssion.prototype.debug = function() {
-	console.log("FILE :");
-	console.log("id : " + this.id);
-	console.log("name : " + this.name);
-	console.log("path : " + this.path);
+	console.log("\tFILE :");
+	console.log("\t\tid : " + this.id);
+	console.log("\t\tname : " + this.name);
+	console.log("\t\tpath : " + this.path);
 }
 
 module.exports = Extenssion;
