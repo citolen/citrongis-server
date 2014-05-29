@@ -10,14 +10,42 @@
 */
 
 
+/***********************************************************
+************************************************************
+****													****
+****					DATABASE 						****
+****													****
+************************************************************
+***********************************************************/
+
 /*
+** Select Database to use.
+*/
+__UseMongoDB__ = true;
+__UseCouchDB__ = false; // DO NOT TURN TO TRUE FOR THE MOMENT. (couchDB.js is not in the repository yet)
+
+/*
+** MongoDB
+**
 ** Database information
 **
 ** Change this information to match with the current Database.
 */
-__DatabaseName__ = "eip"
-__DatabaseIP__ = '127.0.0.1'
-__DatabasePort__ = "27017"
+__MongoDatabaseName__ = "eip";
+__MongoDatabaseIP__ = "127.0.0.1";
+__MongoDatabasePort__ = "27017";
+
+/*
+** CouchDB
+**
+** Database information
+**
+** Change this information to match with the current Database.
+*/
+__CouchDatabaseName__ = null;
+__CouchDatabaseIP__ = null;
+__CouchDatabasePort__ = null;
+
 
 /*
 ** ExtenssionCollectionName, is the name used by mongodb to store Extenssion's data. 

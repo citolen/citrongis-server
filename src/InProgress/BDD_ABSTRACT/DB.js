@@ -1,104 +1,51 @@
 function DB() {
-    this._mongoDriver_ = require('mongodb').MongoClient;
-    this._db_ = null;
+    this.DB = null;
+
+    if (__UseMongoDB__) {
+        var mongoDB_Class = require('./mongoDB.js');
+        this.DB = new mongoDB_Class();
+    } else if (__UseCouchDB__) {
+        var couchDB_Class = require('./couchDB.js');  
+        this.DB = new couchDB_Class();
+    } else {
+        console.log("Error : no database are available, check the config file for the database used values");
+    }
     this.collection_name = null;
 }
 
 DB.prototype.connect = function(callback) {
-    var _me = this;
-    console.log("Try to connect to DB");
-    var url = _me.getDBUrl();
-    _me._mongoDriver_.connect(url, function(err, db) {
-	if (err) {
-	   console.log("Error Connect : ". err);
-	   throw err;
-    } else {
-        console.log("Succes Connect");
-	    _me._db_ = db;
-        callback(_me);
-    }
-    });
+    if (this.DB != null)
+        this.DB.connect(callback); 
 }
 
 DB.prototype.useCollection = function(collection) {
-    this.collection_name = collection;
-}
-
-DB.prototype.getDBUrl = function() {
-    return 'mongodb://' + __DatabaseIP__ + ':' + __DatabasePort__ + '/' + __DatabaseName__;
+    if (this.DB != null)
+        this.DB.useCollection(collection);
 }
 
 DB.prototype.close = function() {
-    if (this._db_ != null)
-	   this._db_.close();
+    if (this.DB != null)
+        this.DB.close();  
 }
 
 DB.prototype.create = function(arg, callback) {
-    if (!this.isConnected())
-	   return;
-
-    var collection = this._db_.collection(this.collection_name);
-
-    collection.insert(arg, function(err, count) {
-       if (err)
-           console.log("Can't insert in collection");
-        else
-            console.log("Number of row added : " + count.length);
-        callback();
-    });
+    if (this.DB != null)
+        this.DB.create(arg, callback);  
 }
 
 DB.prototype.read = function(arg, callback) {
-    if (!this.isConnected())
-	   return;
-
-    var collection = this._db_.collection(this.collection_name);
-
-    collection.find(arg).toArray(function(err, docs) {
-        if (err)
-            console.log("Can't find file");
-        else
-            console.log("Number of row read : " + docs.length);
-        callback(docs);
-    })
+    if (this.DB != null)
+        this.DB.read(arg, callback);
 }
 
 DB.prototype.update = function(selector,arg, callback ) {
-    if (!this.isConnected())
-	   return;
-
-    var collection = this._db_.collection(this.collection_name);
-
-    collection.update(selector, arg, function(err, result) {
-       if (err)
-           console.log("Can't update file");
-        else
-            console.log("Number of row updated : " + result);
-        callback();
-    });
+    if (this.DB != null)
+        this.DB.update(selector, arg, callback); 
 }
 
 DB.prototype.remove = function(arg, callback) {
-    if (!this.isConnected())
-	   return;
-
-    var collection = this._db_.collection(this.collection_name);
-
-    collection.remove(arg, function(err, count) {
-        if (err)
-            console.log("Can't remove file");
-        else
-            console.log("Number of row removed : " + count);
-        callback();
-    })
-}
-
-DB.prototype.isConnected = function() {
-    if (this._db_ == null) {
-	   console.log("Error driver is not connected to database");
-	   return false
-    }
-    return true;
+    if (this.DB != null)
+        this.DB.remove(arg, callback); 
 }
 
 module.exports = DB;
