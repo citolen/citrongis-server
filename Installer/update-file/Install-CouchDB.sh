@@ -1,0 +1,1 @@
+echo "dev" | sudo -S apt-get install couchdb -y
