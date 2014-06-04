@@ -1,1 +1,1 @@
-echo "dev" | sudo -S apt-get install couchdb -y
+echo "dev" | sudo -S apt-get install couchdb-bin -y
