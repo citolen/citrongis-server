@@ -43,8 +43,8 @@ __MongoDatabasePort__ = "27017";
 ** Change this information to match with the current Database.
 */
 __CouchDatabaseName__ = null;
-__CouchDatabaseIP__ = null;
-__CouchDatabasePort__ = null;
+__CouchDatabaseIP__ = "127.0.0.1";
+__CouchDatabasePort__ = "5984"; // 5984 on dev server / 5985 on citronGis Server
 
 
 /*
@@ -53,3 +53,14 @@ __CouchDatabasePort__ = null;
 ** 		Warning : Changing this value can cause some trouble : if some file are already stored in database and the ExtenssionCollectionName is changed, new file will be stored inside a new collection and the api will not be able to read old files's data
 */
 __ExtenssionCollectionName__ = "Extenssion";
+
+
+/*
+** UploadDir is used to define where all the extension will be stored
+**
+**		Note : This folder need to be below /var/www/.
+**
+**		Warning: Changing this value may result in data loss.
+**
+*/
+__UploadDir__ = "/var/www/store_api/UploadDir/";

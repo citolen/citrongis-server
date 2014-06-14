@@ -49,7 +49,7 @@ function testUpdate(FC, next) {
 	Ext.path = "This/Path/as/been/updated/successfully";
 
 	FC.update(Ext, function() { next(); });
-
+		next();
 	});
 }
 
@@ -82,6 +82,15 @@ function makeSomeTest(FC) {
 
 function main() {
 	var FileCollection_Class = require('./FileCollection');
-	var FileCollection = new FileCollection_Class(makeSomeTest);
+	//var FileCollection = new FileCollection_Class(makeSomeTest);
+
+
+	var FileCollection = new FileCollection_Class(function (FC) {
+		FC.getByName("toto", function(file) {
+			for (var id in file) {
+				file[id].debug();
+			}
+		})
+	});
 }
 
