@@ -1,0 +1,13 @@
+BACKUP
+	- Import Extenssion and DB after an Export
+	- Test on citrongis vm
+
+UploadDownload
+	- Remake test with nodejs (without apache2)
+
+ShopAPi (outside scope)
+	- Support couchDB (45% finished)
+
+User Registration
+	- Create base clas for user registration
+	  - with ssl

@@ -27,6 +27,11 @@ function main() {
 				res.end();
 			});
     	});
+
+
+	    express.get("/", function(req, res) {
+                console.log("toto");
+            });
 	});
 	express.listen(8080);
 }
