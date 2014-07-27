@@ -8,5 +8,12 @@ ShopAPi (outside scope)
 	- Support couchDB (45% finished)
 
 User Registration
-	- Create base clas for user registration
+	- Create base class for user registration
 	  - with ssl
+
+User Connection
+	- Create base class for user connection
+	  - with ssl
+
+API
+	- Add class BugRepporter

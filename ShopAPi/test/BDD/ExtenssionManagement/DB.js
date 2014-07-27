@@ -18,9 +18,9 @@ DB.prototype.connect = function(callback) {
         this.DB.connect(callback); 
 }
 
-DB.prototype.useCollection = function(collection) {
+DB.prototype.useCollection = function(collection, callback) {
     if (this.DB != null)
-        this.DB.useCollection(collection);
+        this.DB.useCollection(collection, callback);
 }
 
 DB.prototype.close = function() {
@@ -33,19 +33,38 @@ DB.prototype.create = function(arg, callback) {
         this.DB.create(arg, callback);  
 }
 
-DB.prototype.read = function(arg, callback) {
+DB.prototype.read = function(arg, key, callback) {
     if (this.DB != null)
-        this.DB.read(arg, callback);
+    {
+        if (__UseMongoDB__) {
+             this.DB.read(arg, callback);
+        } else {
+            this.DB.read(arg, key, callback);
+        }
+    }
 }
 
-DB.prototype.update = function(selector,arg, callback ) {
+DB.prototype.update = function(selector, arg, key, callback ) {
     if (this.DB != null)
-        this.DB.update(selector, arg, callback); 
+    {
+        if (__UseMongoDB__) {
+            this.DB.update(selector, arg, callback); 
+        } else {
+            this.DB.update(selector, arg, key, callback);
+        }
+    }
+        
 }
 
-DB.prototype.remove = function(arg, callback) {
+DB.prototype.remove = function(arg, key, callback) {
     if (this.DB != null)
-        this.DB.remove(arg, callback); 
+    {
+        if (__UseMongoDB__) {
+            this.DB.remove(arg, callback); 
+        } else {
+            this.DB.remove(arg, key, callback); 
+        }
+    }
 }
 
 module.exports = DB;
