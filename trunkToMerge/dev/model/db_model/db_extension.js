@@ -45,7 +45,7 @@ Extensions.prototype.init = function() {
 		}
 	};
 
-	this.dependencies = []
+	this.dependencies = [];
 
 	this.accessInformation = {
 		isPrivate : false,

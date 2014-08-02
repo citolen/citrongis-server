@@ -59,7 +59,9 @@ __MongoDatabasePort__ = "27017";
 /*
 ** UploadDir is used to define where all the extension will be stored
 **
+**		Note : This folder need to be below /var/www/.
+**
 **		Warning: Changing this value may result in data loss.
 **
 */
-__UploadDir__ = "/home/pretotn/uploaddir/";
+__UploadDir__ = "/var/www/store_api/UploadDir/";
