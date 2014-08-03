@@ -30,7 +30,7 @@
 **
 ** Change this information to match with the current Database.
 */
-__MongoDatabaseName__ = "eip";
+__MongoDatabaseName__ = "test_eip";
 __MongoDatabaseIP__ = "127.0.0.1";
 __MongoDatabasePort__ = "27017";
 
@@ -63,4 +63,4 @@ __MongoDatabasePort__ = "27017";
 **		Warning: Changing this value may result in data loss.
 **
 */
-__UploadDir__ = "/home/pretotn/uploaddir/";
+__UploadDir__ = "/home/pretotn/test_UploadDir/";

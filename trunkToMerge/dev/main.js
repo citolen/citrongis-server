@@ -1,3 +1,19 @@
+
+function main() {
+	var app = require('express')();
+	var routeur = new (require("./routeur.js"))(app);
+	var testManager = new (require("./test/testManager.js"))(app);
+
+	
+	app.listen(8080);
+}
+
+
+main();
+
+
+// TEST UPLOAD WITH STORE
+/*
 function main() {
 	var express = require('express')();
 	var helper = require("./utility/file/uploadDownload.js");
@@ -12,11 +28,7 @@ function main() {
 
 	express.listen(8080);
 }
-
-
-main();
-
-
+*/
 
 // TEST UPLOAD DOWNLOAD WITHOUT STORE
 /*
