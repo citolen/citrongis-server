@@ -3,8 +3,94 @@ function main() {
 	var app = require('express')();
 	var routeur = new (require("./routeur.js"))(app);
 	var testManager = new (require("./test/testManager.js"))(app);
-
 	
+	var bodyParser = require('body-parser');
+	app.use(bodyParser.urlencoded({extended: true}));
+	app.use(bodyParser.json());
+
+	/* TEST */
+	var loginManager = new (require('./loginManager.js'))(app); // maybe rename as something service
+	var oauthserver = require('oauth2-server');
+	var bodyParser = require('body-parser');
+	
+
+	app.get("/", function (req, res) {
+		res.send('<form action="' + "/login" + '" method="post"'+
+                '<table>'+
+                '<tr>'+
+                    '<td><label for="username">Name</label></td>'+
+                    '<td><input type="text" id="username" name="username" placeholder="Enter name"></td>'+
+                '</tr><tr>'+
+                    '<td><label for="password">password</label></td>'+
+                    '<td><input type="text" id="password" name="password" placeholder="Enter Password"></td>'+
+                '</tr><tr>'+
+                    '<td><input type="hidden" id="client_id" placeholder="client_id" name="client_id" value="testclientid"></td>'+
+                '</tr><tr>'+
+                    '<td><input type="hidden" id="client_secret" placeholder="client_secret" name="client_secret" value="testclientsecret"></td>'+
+                '</tr><tr>'+
+                    '<td><input type="hidden" id="grant_type" placeholder="grant_type" name="grant_type" value="password"></td>'+
+                '</tr>' +
+                '</table>'+
+                '<button type="submit">Submit</button>'+
+            '</form>');
+	})
+
+	app.post("/login", function (req, res) {
+		var request = require('request');
+	    request.post({  
+		  url: 'http://' + new Buffer(req.body.client_id + ":" + req.body.client_secret).toString('base64') + '@localhost:8080/oauth/token',
+		  form: {
+		    grant_type: req.body.grant_type,
+		    username: req.body.username,
+		    password: req.body.password,
+		    client_id: req.body.client_id,
+		    client_secret: req.body.client_secret
+		  },
+		}, function(err, res, body) {
+		  var accessToken = JSON.parse(body).access_token;
+			  request.get({
+		    url: 'http://localhost:8080/secret',
+		    headers: { Authorization: 'Bearer ' + accessToken }
+		  }, function(err, res, body) {
+		    console.log(body);
+		   });
+		});
+	})
+
+	app.post("/subscribe_run", function (req, res) {
+		
+	
+		loginManager.subscribe(req.body);
+		res.send("ok");
+	});
+
+	app.get("/subscribe", function (req, res) {
+		res.send('<form action="' + "/subscribe_run" + '" method="post"'+
+                '<table>'+
+                '<tr>'+
+                    '<td><label for="name">Name</label></td>'+
+                    '<td><input type="text" id="name" name="name" placeholder="Enter name"></td>'+
+                '</tr><tr>'+
+                    '<td><label for="password">password</label></td>'+
+                    '<td><input type="text" id="password" name="password" placeholder="Enter Password"></td>'+
+                '</tr><tr>'+
+                    '<td><input type="hidden" id="clientid" placeholder="clientid" name="clientid" value="testclientid"></td>'+
+                '</tr><tr>'+
+                    '<td><input type="hidden" id="clientsecret" placeholder="clientsecret" name="clientsecret" value="testclientsecret"></td>'+
+                '</tr>' +
+                '</table>'+
+                '<button type="submit">Submit</button>'+
+            '</form>'
+        );
+	})
+
+
+	app.get("/secret", app.oauth.authorise(), function (req, res) {
+		res.send("SECRET PAGE");
+	})
+
+	/* END OF TEST */
+
 	app.listen(8080);
 }
 

@@ -1,5 +1,3 @@
-require("./config.js");
-
 function testManager(app) {
 	this.fs = require('fs');
 
