@@ -1,0 +1,26 @@
+Objectif 17/08/2014 :
+	 - login
+	 - test login
+	 - robustesse
+	 - compatibilité citrongis-server
+
+
+12/08/2014 :
+	   - finir le login (sync bdd)
+	   - sortire le code qui ne fait pas partit du test du main
+
+13/08/2014 :
+	   - rediger le test login	   
+
+14/08/2014 :
+	   - robustesse db
+	   - robustesse test
+
+15/08/2014 :
+	   - campatibilité citrongis vm
+
+16/08/2014 :
+	   - rework de l'api test
+
+17/08/2014 :
+	   - rework de l'api test
