@@ -2,16 +2,18 @@
 function main() {
 	var app = require('express')();
 	var routeur = new (require("./routeur.js"))(app);
-	var testManager = new (require("./test/testManager.js"))(app);
 	
 	var bodyParser = require('body-parser');
 	app.use(bodyParser.urlencoded({extended: true}));
 	app.use(bodyParser.json());
 
+	var testManager = new (require("./test/testManager.js"))(app);
+
 	/* TEST */
+	/*
 	var loginManager = new (require('./loginManager.js'))(app); // maybe rename as something service
 	var oauthserver = require('oauth2-server');
-	var bodyParser = require('body-parser');
+
 	
 
 	app.get("/", function (req, res) {
@@ -58,8 +60,6 @@ function main() {
 	})
 
 	app.post("/subscribe_run", function (req, res) {
-		
-	
 		loginManager.subscribe(req.body);
 		res.send("ok");
 	});
@@ -88,7 +88,7 @@ function main() {
 	app.get("/secret", app.oauth.authorise(), function (req, res) {
 		res.send("SECRET PAGE");
 	})
-
+*/
 	/* END OF TEST */
 
 	app.listen(8080);
