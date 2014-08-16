@@ -117,7 +117,6 @@ main.prototype.initRoute = function() {
 	    },
 	}, function(err, res2, body) {
 	    accessToken = JSON.parse(body).access_token;
-	    console.log("ici : " + accessToken);
 	    request.get({
 		url: 'http://192.168.56.101:8080'+  me.route,
 		headers: { Authorization: accessToken }
