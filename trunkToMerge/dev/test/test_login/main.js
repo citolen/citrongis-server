@@ -15,6 +15,8 @@ function main(app, route) {
     this.route_secret = this.route + "/secret";
     this.route_logout = this.route + "/logout";
 
+    this.status = true;
+
     this.initRoute();
 }
 

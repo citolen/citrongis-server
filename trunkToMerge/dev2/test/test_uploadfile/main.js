@@ -6,6 +6,8 @@ function main(app, route) {
     this.app = app;
 
     this.initRoute();
+
+    this.status = false;
 }
 
 main.prototype.initRoute = function() {

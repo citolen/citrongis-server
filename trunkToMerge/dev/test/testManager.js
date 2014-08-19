@@ -34,7 +34,10 @@ testManager.prototype.initMainTestRoute = function () {
 	this.app.get(this.route, function (req, res) {
 		rows = "";
 		for (var id in _me.testModules) {
+		    if (_me.testModules[id].status && _me.testModules[id].status == true)
 			rows += '<tr><td>' + _me.testModules[id].name + '</td><td>' + _me.testModules[id].description + '</td><td><a href=' + _me.testModules[id].route + '>GO</a></td></tr>'
+		    else 
+			rows += '<tr><td>' + _me.testModules[id].name + '</td><td>' + _me.testModules[id].description + '</td><td>DEPRECATED</td></tr>'
 		}
 		res.status(200);
 		res.send(

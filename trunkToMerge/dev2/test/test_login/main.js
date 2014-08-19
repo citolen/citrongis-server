@@ -19,6 +19,8 @@ function main(app, route) {
     
     this.initDB();
 
+    this.status = true;
+    
     this.initRoute();
 }
 
