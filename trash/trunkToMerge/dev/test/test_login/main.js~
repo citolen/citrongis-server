@@ -1,0 +1,13 @@
+function main(app, route) {
+    this.name = "Authentification";
+    this.description = "subscribe, login and go to secret page";
+    this.route = route + "/authentification";
+
+    this.app = app;
+
+    this.initRoute();
+}
+
+main.prototype.initRoute = function() {
+ 
+}
