@@ -17,7 +17,28 @@ function main(app, route) {
     this.route_secret_prepare = this.route + "/secret_prepare";
     this.route_logout = this.route + "/logout";
     
+    this.initDB();
+
     this.initRoute();
+}
+
+main.prototype.initDB = function() {
+    //insert a client
+    var Client = require("../../model/authClient.js");
+
+    Client.findOne({'clientId' : "testclientid", 'clientSecret' : "testclientsecret"}, function(err, result) {
+	if (!result) {
+	    var client = new Client();
+	    
+	    client.data.clientId = "testclientid";
+	    client.data.clientSecret = "testclientsecret";
+
+	    client.save(function (err) {
+		if (err)
+		    console.log("fail init login_test");
+	    });
+	}
+    });
 }
 
 main.prototype.initRoute = function() {
@@ -107,7 +128,7 @@ main.prototype.initRoute = function() {
 	}	
 	    
 	request.post({  
-	    url: 'http://' + new Buffer(req.body.client_id + ":" + req.body.client_secret).toString('base64') + '@localhost:8080/auth/login',
+	    url: 'http://' + new Buffer(req.body.client_id + ":" + req.body.client_secret).toString('base64') + '@192.168.56.101:8080/auth/login',
 	    form: {
 		grant_type: req.body.grant_type,
 		username: req.body.email,
@@ -118,7 +139,7 @@ main.prototype.initRoute = function() {
 	}, function(err, res2, body) {
 	    accessToken = JSON.parse(body).access_token;
 	    request.get({
-		url: 'http://192.168.56.101:8080'+  me.route,
+		url: 'http://localhost:8080'+  me.route,
 		headers: { Authorization: accessToken }
 	    }, function(err, res3, body) {
 		main(res3.request.headers, res);
@@ -154,11 +175,20 @@ main.prototype.getStatusBox = function(accessToken) {
 }
 
 main.prototype.getActionBox = function(token) {
-    var str = '<div style="border: 1px solid black">' +
+    var str = 'How to test :<br />' +
+	'1) Try to go on secret page you will get an error with stacktrace (cause debug mode is true)<br />' +
+	'2) Create an account<br />' +
+	'3) Login<br />' +
+	'4) Go to secret page<br />' +
+	'<br />Note : <br />' + 
+	'  - You can check your current status on the top<br />' +
+	'  - You can refresh this page after login to get new token<br />' +
+	'  - You can clean your token by clicking on "clean token"<br /><br />' +
+	'<div style="border: 1px solid black">' +
 	'<a href="http://192.168.56.101:8080'+  this.route_subscribe + '">subscribe</a><br />' +
 	'<a href="http://192.168.56.101:8080'+  this.route_login + '">login</a><br />' +
 	'<a href="http://192.168.56.101:8080'+  this.route_secret_prepare + '?token=' + token + '">secret</a><br />' +
-	'<a href="http://192.168.56.101:8080'+  this.route_logout + '">logout</a><br />' +
+	'<a href="http://192.168.56.101:8080'+  this.route + '">clean token</a><br />' +
 	'</div>';
     return str;
 }
