@@ -12,6 +12,13 @@ CInstaller.prototype.install = function(file) {
 	fs.chmodSync(file, 0755);
 	var script = sh(file, null, function(err, sdout, stderr) 
 			{
+			    if (err)
+			    {
+				console.log("-----------------------------------");
+				console.log("              ERROR");
+				console.log("\n" + err);
+				console.log("-----------------------------------");
+			    }
 			    console.log("Current install done !");
 			});
 	script.stdout.on('data', function(data) {
