@@ -2,11 +2,11 @@ function main() {
     //get express instance
     var app = getExpressInstance();
 
-    //init unit test
-    
-
     //init router
     initRouters(app);
+    
+    //init unit test
+    var testManager = new (require("./test/testManager.js"))(app);
 }
 
 function initRouters(app) {

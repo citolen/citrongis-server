@@ -15,18 +15,9 @@ function authRouter(app) {
 }
 
 authRouter.prototype.login = function(app) {
-    app.route("/auth/login")
-	.all(function (req, res, next) {
-	    console.log("Route : auth/login");    
-	    next();
-	})
-	.get(function (req, res, next) {
-	    answerGet(res);
-	})
-	.post(function (req, res, next) {
-	    console.log("POST");
-	    this.authController.login();
-	})
+    var me = this;
+
+    app.all("/auth/login", app.oauth.grant());
 }
 
 authRouter.prototype.logout = function(app) {
@@ -45,6 +36,7 @@ authRouter.prototype.logout = function(app) {
 }
 
 authRouter.prototype.subscribe = function(app) {
+    var me = this;
     app.route("/auth/subscribe")
 	.all(function (req, res, next) {
 	    console.log("Route : auth/subscribe");    
@@ -56,7 +48,7 @@ authRouter.prototype.subscribe = function(app) {
 	.post(function (req, res, next) {
 	    console.log("POST");
 
-	    this.authController.subscribe(req.body, function(err) {
+	    me.authController.subscribe(req.body, function(err) {
 		if (err) {
 		    console.log(err);
 		    res.send(err)
