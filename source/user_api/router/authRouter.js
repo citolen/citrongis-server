@@ -1,7 +1,7 @@
 function authRouter(app) {
 
     // Create controller instance
-    this.authController = new (require("../controller/authController"))();
+    this.authController = new (require("../controller/authController.js"))();
 
     // Init App
     app.oauth = this.authController.getOAuthOption();
@@ -17,7 +17,18 @@ function authRouter(app) {
 authRouter.prototype.login = function(app) {
     var me = this;
 
-    app.all("/auth/login", app.oauth.grant());
+    app.route("/auth/login")
+	.all(function (req, res, next) {
+	    console.log("Route : auth/login");    
+	    next();
+	})
+	.get(function (req, res, next) {
+	    answerGet(res);
+	})
+	.post(function (req, res, next) {
+	    console.log("POST");
+	    me.authController.login(req, res, next);
+	})
 }
 
 authRouter.prototype.logout = function(app) {

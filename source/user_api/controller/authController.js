@@ -21,6 +21,11 @@ authController.prototype.getOAuthOption = function() {
     return this.oauthOption;
 }
 
+authController.prototype.login = function(req, res, next) {
+    var func = this.oauthOption.grant();
+    func(req, res, next);
+}
+
 authController.prototype.logout = function() {
 
 }
