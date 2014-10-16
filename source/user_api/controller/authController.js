@@ -13,7 +13,7 @@ authController.prototype.createOAuthOption = function() {
     this.oauthOption = oauthserver({
 	model: this.loginModel,
 	grants: ['password'],
-	debug : true
+	debug : false
     });
 }
 

@@ -45,10 +45,8 @@ authAccessToken.findOne = function(arg, callback) {
     DB_authAccessToken.all({where : arg}, function(err ,result) { //error if more than one 
 	if (err) {
 	    console.log("error : " + err);
-	    callback(err);
+	    callback(err, null);
 	} else {
-	    if (result.length < 1)
-		err = "empty result";
 	    callback(err, result[0]);
 	}
     })

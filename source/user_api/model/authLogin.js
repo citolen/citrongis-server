@@ -29,7 +29,7 @@ authLogin.grantTypeAllowed = function (clientId, grantType, callback) {
 authLogin.saveAccessToken = function (token, clientId, expires, userId, callback) {
     console.log('in saveAccessToken (token: ' + token + ', clientId: ' + clientId + ', userId: ' + userId + ', expires: ' + expires + ')');
     
-    
+    console.log("userId : " + userId);
     var accessToken = new accessTokenModel();
     accessToken.data.accessToken = token;
     accessToken.data.clientId = clientId;
@@ -45,7 +45,7 @@ authLogin.getUser = function (username, password, callback) {
 	if(err) {
 	    return callback(err);
 	}
-	callback(err, user.id);
+	callback(err, (user != null ? user.id : null));
     });
 };
 

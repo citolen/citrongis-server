@@ -1,9 +1,9 @@
-function main(app, route) {
-    this.initRoute(app, route);
+function main(app, route, handlerUrl) {
+    this.initRoute(app, route, handlerUrl);
 }
 
-main.prototype.initRoute = function(app, route) { 
-    var router = new (require("./router.js"))(app, route);
+main.prototype.initRoute = function(app, route, handlerUrl) { 
+    var router = new (require("./router.js"))(app, route, handlerUrl);
 }
 
 module.exports = main;

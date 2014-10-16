@@ -1,4 +1,4 @@
-function controller(route) {
+function controller(route, handlerUrl) {
     
     // Route
     this.routes = {};
@@ -13,11 +13,15 @@ function controller(route) {
     this.html = {};
     this.requireHtml();
 
+    // Var
+    this.handlerUrl = handlerUrl;
+
 }
 
 controller.prototype.createRoute = function(route) {
     this.routes["login"] = route + "/login";
     this.routes["login_handle"] = route + "/login_handle";
+    console.log(this.routes["login"]);
 }
 
 controller.prototype.createUrl = function()  {
@@ -32,45 +36,75 @@ controller.prototype.requireHtml = function() {
 
 
 
-controller.prototype.login = function(req, res) {
-    var request = require('request');
-
+controller.prototype.login = function(req, res) {    
     if (this.checkField(req.body) == false) {
 	res.send("Error some fields are missing : " + missingFields.toString());
 	return;
     }
-/* A REVOIR
+    this.postLoginRequest(req.body, res, function(err) {
+	if(err) {
+	    console.log("Error : " + err);
+	    res.end();
+	}
+    });
+}
+
+controller.prototype.postLoginRequest = function(data, res, callback) {
+    var request = require('request');
+    var authB64 = new Buffer(data.client_id + ":" + data.client_secret).toString('base64');
+    var url = 'http://' + authB64 + '@192.168.56.101:8080/auth/login';
+    var me = this;
+
     request.post({
-	url: 'http://' + new Buffer(req.body.client_id + ":" + req.body.client_secret).toString('base64') + '@192.168.56.101:8080/auth/login',
+	url: url,
 	form: {
-            grant_type: req.body.grant_type,
-            username: req.body.email,
-            password: req.body.password,
-            client_id: req.body.client_id,
-            client_secret: req.body.client_secret
+            grant_type: data.grant_type,
+            username: data.email,
+            password: data.password,
+            client_id: data.client_id,
+            client_secret: data.client_secret
         },
-    }, function(err, res2, body) {
+    }, function(err, res_data, body) {
+	if (err)
+	    return callback(err);
+
+	var accessToken;
+	var parsedBody;
+	
         if (body) {
-            parsedBody = JSON.parse(body);
+	    try {
+		parsedBody = JSON.parse(body);
+	    } catch (e) {
+		return callback(e);
+ 	    }
         } else {
-            console.log("body not found in answer");
-            return;
+            return callback("body not found in answer");
         }
 	
         if (parsedBody["access_token"])
             accessToken = parsedBody["access_token"];
         else {
-            console.log("accesToken not found in answer");
-            return;
-        }	
-        request.get({
-            url: 'http://localhost:8080'+  me.route,
-            headers: { Authorization: accessToken }
-        }, function(err, res3, body) {
-            main(res3.request.headers, res);
-        });
+            return callback("accesToken not found in answer");    
+        }
+	
+	me.redirect(res, accessToken);
     });
-*/
+}
+
+controller.prototype.redirect = function(res, token) {   
+    var request = require('request');
+    var me = this;
+
+    request.post({
+        url: me.handlerUrl.post,
+        form: { token: token }
+    }, function(err, res_data, body) {
+        if (err) {
+	    console.log(err);
+	    res.send(err);
+	}
+	res.send("Connected<br /><a href='" + me.handlerUrl.get + "'>return</a>");
+    });
 }
 
 controller.prototype.checkField = function(data) {

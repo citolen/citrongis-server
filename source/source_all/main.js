@@ -6,7 +6,7 @@ function main() {
 
     //var loginManager = new (require("./manager/loginManager.js"))(app);
 
-    //var test = new (require("./test/testManager.js"))(app); 
+    var test = new (require("./test/testManager.js"))(app); 
 
 
 	/* TEST */

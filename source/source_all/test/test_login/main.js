@@ -217,7 +217,7 @@ main.prototype.getSubscribeForm = function(data) {
 }
 
 main.prototype.getLoginForm = function() {
-	var client_id = "testclientid";
+    var client_id = "testclientid";
     var client_secret = "testclientsecret";
     
     var str = '<form action="' + this.route_login_handle + '" method="post"'+

@@ -1,5 +1,5 @@
-function router(app, route) {
-    this.controller = new (require("./controller.js"))(route);
+function router(app, route, handlerUrl) {
+    this.controller = new (require("./controller.js"))(route, handlerUrl);
     
     this.loginRoute(app);
 }

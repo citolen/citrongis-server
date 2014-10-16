@@ -10,45 +10,30 @@ function accountRouter(app) {
 
 accountRouter.prototype.getAccount = function(app) {
     var me = this;
+ 
     app.route("/account/get")
 	.all(function (req, res, next) {
 	    console.log("Route : account/get");
-	    
-
-/*----------------------------------------------------------------------*/
-
-	    app.oauth.authorise()(req,res,function (err) {
-		if (err) {
-		    console.log(err);
-		    res.send("Error : Token not found");
-		    return;
-		}
-		else {
-		    next();
-		}
-	    });
-
-/*----------------------------------------------------------------------*/
-
-	    
+	    next();
 	})
 	.get(function (req, res, next) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    console.log("POST");
-	    if (req["body"] && req.body["user_id"]) {
-		var account = me.accountController.getAccount();
-		res.send(account);
-	    } else {
-		res.send("Error missing user_id");
-		console.log("Error missing user_id");
-	    }
+	    require('../utility/lock.js')(app, req, res, function () {
+		var userFromToken = require('../utility/userFromToken.js');
+		userFromToken(req["headers"], function(user_id) {
+		    me.accountController.getAccount(user_id, req.body, function(data) {
+			res.send(data);
+		    });
+		});
+	    })
 	})
 }
 
 accountRouter.prototype.setAccount = function(app) {
     var me = this;
+    
     app.route("/account/set")
 	.all(function (req, res, next) {
 	    console.log("Route : account/set");
@@ -58,14 +43,10 @@ accountRouter.prototype.setAccount = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    console.log("POST");
-	    
-	    if (req["body"] && req.body["account_change"])
-		me.accountController.setAccount();
-	    else {
-		res.send("Error missing account_change data")
-		console.log("Error missing account_change data");
-	    }	
+	    var userFromToken = require('../utility/userFromToken.js');
+	    userFromToken(req["headers"], function(user_id) {
+		me.accountController.setAccount(user_id, req.body);
+	    });
 	})
 }
 

@@ -5,6 +5,10 @@ function User () {
 	this.data.init();
 };
 
+User.prototype.setData = function(data) {
+    this.data = data;
+}
+
 /*
 ** Class Method
 */
@@ -21,7 +25,7 @@ User.prototype.all = function(callback) {
 	User.all(callback);
 };
 
-User.findOne = function(arg, callback) {
+User.prototype.findOne = function(arg, callback) {
 	User.findOne(arg, callback);
 };
 
@@ -43,12 +47,11 @@ User.all = function (callback) {
 
 User.findOne = function(arg, callback) {
 	DB_User.all({where : arg}, function(err ,result) { //error if more than one 
-		if (err)
-			console.log("error : " + err);
-		else {
-			if (result.length < 1)
-				err = "empty result";
-			callback(err, result[0]);
+	    if (err) {
+		console.log("error : " + err);
+		callback(err, null);
+	    } else {
+		    callback(err, result[0]);
 		}
 	})
 };

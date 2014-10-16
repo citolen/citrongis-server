@@ -4,7 +4,7 @@ function main(app, route) {
     this.route = route + "/uploadfile";
 
     this.app = app;
-
+    this.status = true
     this.initRoute();
 }
 
