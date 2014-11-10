@@ -41,11 +41,18 @@ authLogin.saveAccessToken = function (token, clientId, expires, userId, callback
 
 authLogin.getUser = function (username, password, callback) {
     console.log('in getUser (username: ' + username + ', password: ' + password + ')');
-    userModel.findOne({ 'authInfo.email': username, 'authInfo.password': password }, function(err, user) {
-	if(err) {
-	    return callback(err);
-	}
-	callback(err, (user != null ? user.id : null));
+    userModel.findOne({ 'authInfo.email': username}, function(err, user) {
+	   if(err) {
+	       return callback(err);
+	   }
+       if (user != null) {
+            var crypter = require("../utility/crypter.js");
+            crypter.compare(password, user.authInfo.password, function (err, isValid) {  
+                callback(err, (isValid ?  user.id : null));
+            });
+        } else {
+	       callback(err, null);
+        }
     });
 };
 

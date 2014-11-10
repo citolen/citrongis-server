@@ -85,7 +85,10 @@ main.prototype.initRoute = function() {
 		password: req.body.password
 	    }
 	}, function (err, res2, body) {
-	    var to_send = me.getSubscribeOk();
+		if (req.body == "Ok")
+	    	var to_send = me.getSubscribeOk();
+	    else
+	    	var to_send = res2.body;
 	    if (err)
 		res.send(err)
 	    res.send(to_send);
@@ -136,7 +139,11 @@ main.prototype.initRoute = function() {
 	    },
 	}, function(err, res2, body) {
 	    if (body) {
-		parsedBody = JSON.parse(body);
+		try {
+		    parsedBody = JSON.parse(body);
+		} catch (ex) {
+		    return;
+		}
 	    } else {
 		console.log("body not found in answer");
 		return;

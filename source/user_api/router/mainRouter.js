@@ -1,5 +1,4 @@
 function mainRouter(app) {
-
     this.initRouters(app);
 }
 

@@ -11,7 +11,6 @@ function authRouter(app) {
     this.login(app);
     this.logout(app);
     this.subscribe(app);
-
 }
 
 authRouter.prototype.login = function(app) {
@@ -42,7 +41,6 @@ authRouter.prototype.logout = function(app) {
 	})
 	.post(function (req, res, next) {
 	    console.log("POST");
-	    this.authController.logout();
 	})
 }
 

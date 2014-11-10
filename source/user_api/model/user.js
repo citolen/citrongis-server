@@ -56,4 +56,17 @@ User.findOne = function(arg, callback) {
 	})
 };
 
+User.have = function(arg, callback) {
+	DB_User.all({where : arg}, function(err ,result) { //error if more than one 
+	    if (err) {
+			console.log("error : " + err);
+			callback(err, null);
+	    } else {
+	    	console.log("LENGHT : " + result.length);
+	    	console.log("RETURN : " + (result.length != 0 ? true : false));
+		    callback((result.length != 0 ? true : false));
+		}
+	})
+};
+
 module.exports = User;
