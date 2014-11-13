@@ -43,9 +43,13 @@ accountRouter.prototype.setAccount = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    var userFromToken = require('../utility/userFromToken.js');
-	    userFromToken(req["headers"], function(user_id) {
-		me.accountController.setAccount(user_id, req.body);
+	    require('../utility/lock.js')(app, req, res, function () {
+		var userFromToken = require('../utility/userFromToken.js');
+		userFromToken(req["headers"], function(user_id) {
+		    me.accountController.setAccount(user_id, req.body);
+		    res.status(200);
+		    res.end();
+		});
 	    });
 	})
 }

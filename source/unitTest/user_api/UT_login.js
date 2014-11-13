@@ -29,7 +29,7 @@ function login(username, password, client_id, client_secret, callback) {
 
     var post_form = {
 	url: 'http://localhost:8080/auth/login',
-X	form: login_form
+	form: login_form
     };
 
     request.post(post_form, function (err, res, body) {

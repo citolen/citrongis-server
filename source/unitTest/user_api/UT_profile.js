@@ -61,6 +61,35 @@ function createTestAccount(mainCallback) {
     
 }
 
+function getProfile(data, token, callback) {
+    var post_form = {
+	url : "http://localhost:8080/account/get",
+	headers : { Authorization: 'Bearer ' + token},
+	form : data
+    }
+
+    request.post(post_form, function (err, res, body) {
+	try {	
+	    body = JSON.parse(body);
+	} catch (e) {}
+	callback({ "status" : res.statusCode, "data" : body});
+    });
+
+}
+
+function setProfile(data, token, callback) {
+    var post_form = {
+	url : "http://localhost:8080/account/set",
+        headers : { Authorization: 'Bearer ' + token},
+	form : data
+    }
+
+    request.post(post_form, function(err, res, body) {
+	callback(res.statusCode);
+    });
+
+}
+
 function main() 
 {
     var token1;
@@ -83,38 +112,99 @@ function main()
 	    });
 	},
 	function (callback) {
-	    // recupre infos mais faut token user 1
+	    getProfile({"authInfo_email": ""}, token1 + "1", function (value) {
+		assert(value.status, 301, true);
+		callback(null, "")
+	    });
 	},
 	function (callback) {
-	    // post infos mais faux token user 1
+	    setProfile({"userInfo_firstName": ""}, token1 + "1", function (value) {
+		assert(value, 301, true);
+		callback(null, "")
+	    });
 	},
 	function (callback) {
-	    // recupp infos user 2
+	    getProfile({"authInfo_email": ""}, token2, function (value) {
+		var s = { "authInfo_email" : "user2@epitech.eu" };
+		assert(JSON.stringify(value.data), JSON.stringify(s), true);
+		callback(null, "")
+	    });
 	},
 	function (callback) {
-	    // posrt infos user 2
+	    setProfile({"userInfo_firstName": "UserName2"}, token2 , function (value) {
+		assert(value, 200, true);
+		callback(null, "")
+	    });
 	},
 	function (callback) {
-	    // get infos user 1
+	    getProfile({"authInfo_email": "", "userInfo_lastName": ""}, token1, function (value) {
+		var s = { "authInfo_email" : "user1@epitech.eu",
+			  "userInfo_lastName" : null};
+		assert(JSON.stringify(value.data), JSON.stringify(s), true);
+		callback(null, "")
+	    });
 	},
 	function (callback) {
-	    // post infos user 1
+	    setProfile({"userInfo_firstName": "UserName1", "userInfo_lastName": "lastnameUser1"}, token1 , function (value) {
+		assert(value, 200, true);
+		callback(null, "")
+	    });
 	},
 	function (callback) {
-	    // post info user 2
+	    var s = {"userInfo_firstName": "UserName2", 
+		     "userInfo_lastName": "lastnameUser2",
+		     "userInfo_dateOfBirth" : "01/08/1980",
+		     "userInfo_language" : "fr",
+		     "userInfo_profileType" : "user",
+		     "userInfo_picture" : "/img/profile-05246",
+		     "userInfo_contact_email" : "user2@epitech.eu",
+		     "userInfo_contact_phoneNumber" : "0685959565",
+		     "userInfo_contact_location" : "Paris",
+		     "userInfo_job_status" : "Team Member",
+		     "userInfo_job_company_name" : "MyCompany",
+		     "userInfo_job_company_location" : "Paris",
+		     "accountInfo_creationDate" : "05/06/1985"
+		    };
+	    setProfile(s, token2 , function (value) {
+		assert(value, 200, true);
+		callback(null, "")
+	    });
 	},
 	function (callback) {
-	    // recupp infos user 2
-	},
-	function (callback) {
-	    // recupp infos user 2
-	},
-	function (callback) {
-	    // recupp infos user 2
-	},
-	function (callback) {
-	    // recupp infos user 2
-	},
+	    var s0 = {"userInfo_firstName": "", 
+		      "userInfo_lastName": "",
+		      "userInfo_dateOfBirth" : "",
+		      "userInfo_language" : "",
+		      "userInfo_profileType" : "",
+		      "userInfo_picture" : "",
+		      "userInfo_contact_email" : "",
+		      "userInfo_contact_phoneNumber" : "",
+		      "userInfo_contact_location" : "",
+		      "userInfo_job_status" : "",
+		      "userInfo_job_company_name" : "",
+		      "userInfo_job_company_location" : "",
+		      "accountInfo_creationDate" : ""
+		     };
+	    
+	    getProfile(s0, token2, function (value) {
+		var s = {"userInfo_firstName": "UserName2", 
+			 "userInfo_lastName": "lastnameUser2",
+			 "userInfo_dateOfBirth" : "01/08/1980",
+			 "userInfo_language" : "fr",
+			 "userInfo_profileType" : "user",
+			 "userInfo_picture" : "/img/profile-05246",
+			 "userInfo_contact_email" : "user2@epitech.eu",
+			 "userInfo_contact_phoneNumber" : "0685959565",
+			 "userInfo_contact_location" : "Paris",
+			 "userInfo_job_status" : "Team Member",
+			 "userInfo_job_company_name" : "MyCompany",
+			 "userInfo_job_company_location" : "Paris",
+			 "accountInfo_creationDate" : "05/06/1985"
+			};
+		assert(JSON.stringify(value.data), JSON.stringify(s), true);
+		callback(null, "")
+	    });
+	}
     ]);
 }
 

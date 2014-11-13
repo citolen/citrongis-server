@@ -63,10 +63,10 @@ accountController.prototype.switchDataSET = function(user, data) {
 	case "userInfo_job_status":
 	    user.data.userInfo.job.status = data[key];
 	    break;
-	case "userInfo_job_compagny_name":
+	case "userInfo_job_company_name":
 	    user.data.userInfo.job.compagny.name = data[key];
 	    break;
-	case "userInfo_job_compagny_location":
+	case "userInfo_job_company_location":
 	    user.data.userInfo.job.compagny.location = data[key];
 	    break;
 	case "accountInfo_creationDate":
@@ -118,10 +118,10 @@ accountController.prototype.switchDataGET = function(user, data) {
 	case "userInfo_job_status":
 	    result[key] = user.data.userInfo.job.status;
 	    break;
-	case "userInfo_job_compagny_name":
+	case "userInfo_job_company_name":
 	    result[key] = user.data.userInfo.job.compagny.name;
 	    break;
-	case "userInfo_job_compagny_location":
+	case "userInfo_job_company_location":
 	    result[key] = user.data.userInfo.job.compagny.location;
 	    break;
 	case "accountInfo_creationDate":

@@ -11,3 +11,9 @@ echo "   - Clear Database ..."
 
 echo "   - Launch UT_login.js"
 nodejs user_api/UT_login.js
+
+echo "   - Clear Database ..."
+./db_cleaner.sh > /dev/null
+
+echo "   - Launch UT_profile.js"
+nodejs user_api/UT_profile.js
