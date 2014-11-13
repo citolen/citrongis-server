@@ -73,8 +73,8 @@ controller.prototype.getAccount = function(callback) {
 		"userInfo_contact_phoneNumber": "",
 		"userInfo_contact_location": "",
 		"userInfo_job_status": "",
-		"userInfo_job_compagny_name": "",
-		"userInfo_job_compagny_location": "",
+		"userInfo_job_company_name": "",
+		"userInfo_job_company_location": "",
 		"accountInfo_creationDate": ""};
 
     request.post({

@@ -28,7 +28,7 @@ User.prototype.init = function() {
 		picture : null,
 		job : {
 			status : null,
-			compagny : {
+			company : {
 				name : null,
 				location : null
 			}

@@ -67,10 +67,10 @@ function account(urls, data) {
 	'<td><input type="text" name="userInfo_job_status" id="status" value="' + data["userInfo_job_status"] + '"></td>'+
 	'</tr><tr>'+
 	'<td><label for="name">Name</label></td>'+
-	'<td><input type="text" name="userInfo_job_compagny_name" id="name" value="' + data["userInfo_job_compagny_name"] + '"></td>'+
+	'<td><input type="text" name="userInfo_job_company_name" id="name" value="' + data["userInfo_job_company_name"] + '"></td>'+
 	'</tr><tr>'+
 	'<td><label for="location">Location</label></td>'+
-	'<td><input type="text" name="userInfo_job_compagny_location" id="location" value="' + data["userInfo_job_compagny_location"] + '"></td>'+
+	'<td><input type="text" name="userInfo_job_company_location" id="location" value="' + data["userInfo_job_company_location"] + '"></td>'+
 	'</table>'+
 	'</fieldset>'+	
 	'</td>'+	
