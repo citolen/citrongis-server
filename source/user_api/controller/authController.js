@@ -26,9 +26,9 @@ authController.prototype.getOAuthOption = function() {
 authController.prototype.login = function(req, res, next) {
     var func = this.oauthOption.grant();
 
-    if (func != null)
+    if (func != null) {
 	func(req, res, next);
-    else
+    } else
 	console.log("Internal error : Function not found : Grant.login");
 }
 

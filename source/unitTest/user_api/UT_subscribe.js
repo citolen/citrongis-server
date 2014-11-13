@@ -22,25 +22,25 @@ function main()
 {
     async.series([
 	function (callback) {
-	    subscribe("nicolas.pretot@epitech.eu", "nicolaspretot", function (value) {
+	    subscribe("user@epitech.eu", "user_password", function (value) {
 		assert(value, "Ok", true);
 		callback(null, "");
 	    });
 	},
 	function (callback) {
-	    subscribe("nicolas.pretot@epitech.eu", "nicolaspretot", function (value) {
+	    subscribe("user@epitech.eu", "user_password", function (value) {
 		assert(value, "Ok", false);
 		callback(null, "");
 	    });
 	},
 	function (callback) {
-	    subscribe("nicolas@epitech.eu", "nicola", function (value) {
+	    subscribe("otherUser@epitech.eu", "pass", function (value) {
 		assert(value, "Ok", false);
 		callback(null, "");
 	    });
 	},
 	function (callback) {
-	    subscribe("n.pretot@epitech.eu", "nicolaspretot", function (value) {
+	    subscribe("randomUser@epitech.eu", "user_password", function (value) {
 		assert(value, "Ok", true);
 		callback(null, "");
 	    });
