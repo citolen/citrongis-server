@@ -8,7 +8,7 @@
       "bcrypt": "latest",
       "async": "latest",
       "express": "latest",
-      "jugglingdb-mongodb": "latest",
-      "jugglingdb": "latest"
+      "jugglingdb": "latest",
+      "jugglingdb-mongodb": "latest"
   }
 }
