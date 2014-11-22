@@ -5,7 +5,7 @@ function controller(route, handlerUrl) {
     this.createRoute(route);
     
     // Url
-    this.url = "http://192.168.56.101:8080";
+    this.url = "http://localhost:8080";
     this.urls = {};
     this.createUrl();
 
@@ -52,7 +52,7 @@ controller.prototype.login = function(req, res) {
 controller.prototype.postLoginRequest = function(data, res, callback) {
     var request = require('request');
     var authB64 = new Buffer(data.client_id + ":" + data.client_secret).toString('base64');
-    var url = 'http://' + authB64 + '@192.168.56.101:8080/auth/login';
+    var url = 'http://' + authB64 + '@localhost:8080/auth/login';
     var me = this;
 
     request.post({

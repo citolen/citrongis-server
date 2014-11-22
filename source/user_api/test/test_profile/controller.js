@@ -5,7 +5,7 @@ function controller(route) {
     this.createRoute(route);
 
     // Url
-    this.url = "http://192.168.56.101:8080";
+    this.url = "http://localhost:8080";
     this.urls = {};
     this.createUrl();
 
@@ -30,7 +30,6 @@ controller.prototype.createUrl = function() {
    for(var route in this.routes) {
 	this.urls[route] = this.url + this.routes[route];
     }
-    console.log(this.urls["index"]);
 }
 
 controller.prototype.requireHtml = function() {
