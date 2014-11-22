@@ -25,7 +25,6 @@ authRouter.prototype.login = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    console.log("POST");
 	    me.authController.login(req, res, next);
 	})
 }
@@ -40,7 +39,6 @@ authRouter.prototype.logout = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    console.log("POST");
 	})
 }
 
@@ -55,8 +53,6 @@ authRouter.prototype.subscribe = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    console.log("POST");
-
 	    me.authController.subscribe(req.body, function(err) {
 		if (err) {
 		    console.log(err);

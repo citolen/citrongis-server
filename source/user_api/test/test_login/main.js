@@ -129,7 +129,7 @@ main.prototype.initRoute = function() {
 	}	
 	    
 	request.post({  
-	    url: 'http://' + new Buffer(req.body.client_id + ":" + req.body.client_secret).toString('base64') + '@192.168.56.101:8080/auth/login',
+	    url: 'http://' + new Buffer(req.body.client_id + ":" + req.body.client_secret).toString('base64') + '@localhost:8080/auth/login',
 	    form: {
 		grant_type: req.body.grant_type,
 		username: req.body.email,
@@ -203,10 +203,10 @@ main.prototype.getActionBox = function(token) {
 	'  - You can refresh this page after login to get new token<br />' +
 	'  - You can clean your token by clicking on "clean token"<br /><br />' +
 	'<div style="border: 1px solid black">' +
-	'<a href="http://192.168.56.101:8080'+  this.route_subscribe + '">subscribe</a><br />' +
-	'<a href="http://192.168.56.101:8080'+  this.route_login + '">login</a><br />' +
-	'<a href="http://192.168.56.101:8080'+  this.route_secret_prepare + '?token=' + token + '">secret</a><br />' +
-	'<a href="http://192.168.56.101:8080'+  this.route + '">clean token</a><br />' +
+	'<a href="http://localhost:8080'+  this.route_subscribe + '">subscribe</a><br />' +
+	'<a href="http://localhost:8080'+  this.route_login + '">login</a><br />' +
+	'<a href="http://localhost:8080'+  this.route_secret_prepare + '?token=' + token + '">secret</a><br />' +
+	'<a href="http://localhost:8080'+  this.route + '">clean token</a><br />' +
 	'</div>';
     return str;
 }

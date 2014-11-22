@@ -14,15 +14,13 @@ userManager.getWithId = function(id, callback) {
     })
 }
 
-	userManager.checkExistingUserName = function(username, callback) {
-		userModel = require("../model/user.js");
-
-		userModel.have({ 'authInfo.email': username}, function(result) {
-			console.log("result : " + result);
-			console.log("!result : " + !result);
-			callback(!result);
-		});
-	}
+userManager.checkExistingUserName = function(username, callback) {
+    userModel = require("../model/user.js");
+    
+    userModel.have({ 'authInfo.email': username}, function(result) {
+	callback(!result);
+    });
+}
 
 
 module.exports = userManager;
