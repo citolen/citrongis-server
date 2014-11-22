@@ -3,7 +3,7 @@
       "request": "latest",
       "node-fs": "latest",
       "oauth2-server": "latest",
-      "color": "latest",
+      "colors": "latest",
       "body-parser": "latest",
       "bcrypt": "latest",
       "async": "latest",
