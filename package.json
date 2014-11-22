@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+      "request": "latest",
+      "node-fs": "latest",
+      "oauth2-server": "latest",
+      "color": "latest",
+      "body-parser": "latest",
+      "bcrypt": "latest",
+      "async": "latest",
+      "express": "latest",
+      "jugglingdb": "latest",
+      "jugglingdb-mongodb": "latest"
+  }
+}
