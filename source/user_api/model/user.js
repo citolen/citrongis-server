@@ -40,31 +40,33 @@ User.prototype.debug = function () {
  */
 User.all = function (callback) {
  	DB_Extension.all(null, function(err, result) {
-		if (err)
-			console.log("error : " + err);
-		else
-			callback(result);
+		if (err) {
+			logger.error(err);
+			callback(err, null);
+		} else {
+			callback(err, result);
+		}	
 	});
 }
 
 User.findOne = function(arg, callback) {
-	DB_User.all({where : arg}, function(err ,result) { //error if more than one 
+	DB_User.all({where : arg}, function(err ,result) {
 	    if (err) {
-		console.log("error : " + err);
-		callback(err, null);
+			logger.error(err);
+			callback(err, null);
 	    } else {
-		    callback(err, result[0]);
+	    	 callback(err, result[0]);
 		}
 	})
 };
 
 User.have = function(arg, callback) {
-	DB_User.all({where : arg}, function(err ,result) { //error if more than one 
+	DB_User.all({where : arg}, function(err ,result) {
 	    if (err) {
-			console.log("error : " + err);
+			logger.error(err);
 			callback(err, null);
 	    } else {
-		callback((result.length != 0 ? true : false));
+			callback((result.length != 0 ? true : false));
 	    }
 	})
 };

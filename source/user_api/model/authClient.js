@@ -1,3 +1,4 @@
+var logger = require("../utility/logger.js");
 var DB_authClient = require('./db_model/db_authClient.js');
 
 function authClient () {
@@ -11,8 +12,9 @@ function authClient () {
 
 authClient.prototype.save = function (callback) {
 	this.data.save(function(err, result) {
-		if (err)
-			console.log("error : " + err);
+		if (err) {
+			logger.error(err);
+		}
 		callback(err);
 	});
 };
@@ -34,22 +36,21 @@ authClient.prototype.debug = function () {
  */
 authClient.all = function (callback) {
  	DB_authClient.all(null, function(err, result) {
-		if (err)
-			console.log("error : " + err);
-		else
-			callback(result);
+		if (err) {
+			logger.error(err);
+			callback(err, null);
+		} else {
+			callback(err, result);
+		}
 	});
 }
 
 authClient.findOne = function(arg, callback) {
     DB_authClient.all({where : arg}, function(err ,result) {
 	if (err) {
-	    console.log("error : " + err);
-	    callback(err)
-	} else 
-	{
-	    if (result.length < 1)
-		err = "empty result";
+	    logger.error(err);
+	    callback(err, null)
+	} else {
 	    callback(err, result[0]);
 	}
     })

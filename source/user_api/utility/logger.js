@@ -12,7 +12,7 @@ logger.error = function(message) {
 	console.log("---------------------------------------".yellow);
 }
 
-logger.error = function(message) {
+logger.internalError = function(message) {
 	var color = require("colors");
 
 	console.log("---------------------------------------".red);

@@ -16,7 +16,13 @@ crypter.hash = function (string, callback) {
 
 crypter.compare = function (origin, hash, callback) {
 	var bcrypt = require("bcrypt");
-	bcrypt.compare(origin, hash, callback);
+	
+	bcrypt.compare(origin, hash, function (err, isValid) {
+		if (err) {
+			logger.error(err);
+		}
+		callback(err, isValid);
+	});
 }
 
 module.exports = crypter;

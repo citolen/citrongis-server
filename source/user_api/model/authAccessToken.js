@@ -1,3 +1,4 @@
+var logger = require("../utility/logger.js");
 var DB_authAccessToken = require('./db_model/db_authAccessToken.js');
 
 function authAccessToken () {
@@ -11,8 +12,9 @@ function authAccessToken () {
 
 authAccessToken.prototype.save = function (callback) {
 	this.data.save(function(err, result) {
-		if (err)
-			console.log("error : " + err);
+		if (err) {
+			logger.error(err);
+		}
 		callback(err);
 	});
 };
@@ -34,22 +36,24 @@ authAccessToken.prototype.debug = function () {
  */
 authAccessToken.all = function (callback) {
  	DB_authAccessToken.all(null, function(err, result) {
-		if (err)
-			console.log("error : " + err);
-		else
-			callback(result);
+		if (err) {
+			logger.error(err);
+			callback(err, null);
+		} else {
+			callback(err, result);
+		}
 	});
 }
 
 authAccessToken.findOne = function(arg, callback) {
-    DB_authAccessToken.all({where : arg}, function(err ,result) { //error if more than one 
-	if (err) {
-	    console.log("error : " + err);
-	    callback(err, null);
-	} else {
-	    callback(err, result[0]);
-	}
-    })
+    DB_authAccessToken.all({where : arg}, function(err ,result) {
+		if (err) {
+		    logger.error(err);
+		    callback(err, null);
+		} else {
+		    callback(err, result[0]);
+		}
+    });
 };
 
 module.exports = authAccessToken
