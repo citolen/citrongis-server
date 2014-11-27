@@ -25,7 +25,13 @@ authRouter.prototype.login = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    me.authController.login(req, res, next);
+	    me.authController.login(req, res, next, function(err) {
+	    	// Only called if internal error happen when try using grant.login()
+	    	if (err) {
+	    		res.status(501);
+        		res.send(err);
+	    	}
+	    });
 	})
 }
 
@@ -55,9 +61,10 @@ authRouter.prototype.subscribe = function(app) {
 	.post(function (req, res, next) {
 	    me.authController.subscribe(req.body, function(err) {
 		if (err) {
-		    console.log(err);
+			res.status(501);
 		    res.send(err)
 		} else {
+			res.status(200);
 		    res.send("Ok");
 		}
 	    });

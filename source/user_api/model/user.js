@@ -1,3 +1,4 @@
+var logger = require("../utility/logger.js");
 var DB_User = require('./db_model/db_user.js');
 
 function User () {
@@ -15,8 +16,9 @@ User.prototype.setData = function(data) {
 
 User.prototype.save = function (callback) {
 	this.data.save(function(err, result) {
-		if (err)
-			console.log("error : " + err);
+		if (err) {
+			logger.error(err);
+		}
 		callback(err);
 	});
 };

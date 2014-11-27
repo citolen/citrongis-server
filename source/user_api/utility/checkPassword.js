@@ -1,15 +1,21 @@
-function checkPassword(password, callback) {
-	var isvalid = true;
-	var err = "";
+var logger = require("../utility/logger.js");
 
-	if (password.length < 8) {
-		err = err + "Password's length should be more than 8 character";
-		isvalid = false;
-	}
-	if (isvalid)
-		callback(null, isvalid);
-	else
-		callback(err, isvalid);
+function checkPassword(password, callback) {
+    var isvalid = true;
+    
+    if (!password)
+	   callback("", false);
+
+    if (password.length < 8)
+	   isvalid = false;
+
+    if (isvalid)
+	    callback(null, isvalid);
+    else {
+        var err = "Invalid password";
+        logger.error(err);
+        callback(err, isvalid);
+    } 
 }
 
 module.exports = checkPassword;
