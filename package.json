@@ -1,14 +1,19 @@
 {
-  "dependencies": {
-      "request": "latest",
-      "node-fs": "latest",
-      "oauth2-server": "latest",
-      "colors": "latest",
-      "body-parser": "latest",
-      "bcrypt": "latest",
-      "async": "latest",
-      "express": "latest",
-      "jugglingdb": "latest",
-      "jugglingdb-mongodb": "latest"
-  }
+    "description": "Requirements for CitronGIS APIs",
+    "repository": {
+	"type": "git",
+	"url": "https://github.com/citolen/citrongis-server.git"
+	},
+    "dependencies": {
+	"request": "latest",
+	"node-fs": "latest",
+	"oauth2-server": "latest",
+	"colors": "latest",
+	"body-parser": "latest",
+	"bcrypt": "latest",
+	"async": "latest",
+	"express": "latest",
+	"jugglingdb": "latest",
+	"jugglingdb-mongodb": "latest"
+    }
 }
