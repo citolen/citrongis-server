@@ -4,7 +4,7 @@ function lock(app, req, res, next) {
     app.oauth.authorise()(req,res,function (err) {
 	if (err) {
 		logger.error(err);
-	    res.status(301);
+	    res.status(401);
 	    res.end();
 	} else {
 	    next();

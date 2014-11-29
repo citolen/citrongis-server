@@ -27,11 +27,25 @@ authController.prototype.getOAuthOption = function() {
 authController.prototype.login = function(req, res, next, callback) {
     var func = this.oauthOption.grant();
 
-    if (func && func != null) {
-	   func(req, res, next);
+    if (req.body) {
+        var data = {
+            "grant_type" : "password",
+            "username" : req.body.email,
+            "password" : req.body.password,
+            "client_id" : req.body.client_id,
+            "client_secret" : req.body.client_secret
+        }
+        req.body = data;
+        if (func && func != null) {
+    	   func(req, res, next);
+        } else {
+            var err = "Can't find function grant.login";
+            logger.internalError(err);
+            callback(err);
+        }
     } else {
-        var err = "Can't find function grant.login";
-        logger.internalError(err);
+        var err = "Error Empty data";
+        logger.error(err);
         callback(err);
     }
 }
