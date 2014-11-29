@@ -21,10 +21,7 @@ accountRouter.prototype.getAccount = function(app) {
 	    next();
 	})
 	.get(function (req, res, next) {
-	    answerGet(res);
-	})
-	.post(function (req, res, next) {
-	  	me.lock(app, req, res, function () {
+	    me.lock(app, req, res, function () {
 			me.userFromToken(req["headers"], function(err, user_id) {
 				if (err) {
 					res.status(500);
@@ -42,6 +39,8 @@ accountRouter.prototype.getAccount = function(app) {
 				}
 			});
 	    })
+	})
+	.post(function (req, res, next) {
 	})
 }
 
