@@ -2,6 +2,8 @@ var logger = require("../utility/logger.js");
 
 function authController() {
     this.userManager = require("../manager/userManager.js");
+    this.accessTokenManager = require('../manager/accessTokenManager.js');
+
 
     this.oauthOption = null;
 
@@ -44,6 +46,27 @@ authController.prototype.subscribe = function(data, callback) {
 	   logger.error(err);
        callback(err);
     }
+}
+
+authController.userFromToken = function(header, callback) {
+    var accessTokenManager = require('../manager/accessTokenManager.js');
+    if (header) {
+        if (header["authorization"]) {
+            var token = header["authorization"].replace("Bearer ", "");
+            accessTokenManager.getWithId(token, function(err, result) {
+                callback(err, result.userId);
+            });
+        } else {
+            var err = "Missing authorization information";
+            logger.error(err);
+            callback(err, null);
+        }
+    } else {
+        var err = "Header is missing";
+        logger.error(err);
+        callback(err, null);
+    }
+    
 }
 
 module.exports = authController;

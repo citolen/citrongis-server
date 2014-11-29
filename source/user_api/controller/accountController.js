@@ -1,22 +1,44 @@
+var logger = require("../utility/logger.js");
+
 function accountController() {
     this.userManager = require('../manager/userManager.js');
 }
 
-accountController.prototype.setAccount = function(user_id, new_data) {
+accountController.prototype.setAccount = function(user_id, new_data, callback) {
     var me = this;
     
-    this.userManager.getWithId(user_id, function(user) {	
-	user = me.switchDataSET(user, new_data);
-	user.save(function () {});
-    });
+    this.userManager.getWithId(user_id, function(err, user) {
+    	if (err) {
+    		callback(err, null);
+    	} else {
+			user = me.switchDataSET(user, new_data);
+			if (user == null) {
+				err = "Invalid key for account";
+				logger.error(err);
+				callback(err);
+			} else {
+				user.save(function (err) {
+					callback(err);
+				});
+			}
+		}
+	});
 }
 
 accountController.prototype.getAccount = function(user_id, new_data, callback) {
     var me = this;
     
-    this.userManager.getWithId(user_id, function(user) {	
-	var result = me.switchDataGET(user, new_data);
-	callback(result);
+    this.userManager.getWithId(user_id, function(err, user) {
+    	if (err) {
+    		callback(err, null);
+    	} else {
+    		var result = me.switchDataGET(user, new_data);
+    		if (result == null) {
+    			err = "Invalid key for account";
+				logger.error(err);
+			}
+			callback(err, result);
+    	}
     });
 }
 
@@ -72,6 +94,8 @@ accountController.prototype.switchDataSET = function(user, data) {
 	case "accountInfo_creationDate":
 	    user.data.accountInfo.creationDate = data[key];
 	    break;
+	default :
+		return null;
 	}
     }
     return user;
@@ -127,6 +151,8 @@ accountController.prototype.switchDataGET = function(user, data) {
 	case "accountInfo_creationDate":
 	    result[key] = user.data.accountInfo.creationDate;
 	    break;
+	default :
+		return null;
 	}
     }
     return result;

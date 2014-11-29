@@ -4,12 +4,7 @@ function logger() {
 logger.error = function(message) {
 	var color = require("colors");
 
-	console.log("---------------------------------------".yellow);
-	console.log("                ERROR                  ".yellow);
-	console.log("---------------------------------------".yellow);
-	console.log("Error message :".yellow);
 	console.log(message.yellow);
-	console.log("---------------------------------------".yellow);
 }
 
 logger.internalError = function(message) {

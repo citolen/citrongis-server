@@ -3,6 +3,10 @@ function accountRouter(app) {
     // Create controller instance
     this.accountController = new (require("../controller/accountController.js"))();
 
+    // Get functions
+    this.lock = require('../utility/lock.js');
+    this.userFromToken = require('../controller/authController.js').userFromToken;
+
     // Create route
     this.getAccount(app);
     this.setAccount(app);
@@ -20,13 +24,23 @@ accountRouter.prototype.getAccount = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    require('../utility/lock.js')(app, req, res, function () {
-		var userFromToken = require('../utility/userFromToken.js');
-		userFromToken(req["headers"], function(user_id) {
-		    me.accountController.getAccount(user_id, req.body, function(data) {
-			res.send(data);
-		    });
-		});
+	  	me.lock(app, req, res, function () {
+			me.userFromToken(req["headers"], function(err, user_id) {
+				if (err) {
+					res.status(500);
+					res.send(err);
+				} else {
+					me.accountController.getAccount(user_id, req.body, function(err, data) {
+						if (err) {
+							res.status(500);
+							res.send(err);
+						} else {
+							res.status(200);
+							res.send(data);
+						}
+				    });
+				}
+			});
 	    })
 	})
 }
@@ -43,13 +57,23 @@ accountRouter.prototype.setAccount = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-	    require('../utility/lock.js')(app, req, res, function () {
-		var userFromToken = require('../utility/userFromToken.js');
-		userFromToken(req["headers"], function(user_id) {
-		    me.accountController.setAccount(user_id, req.body);
-		    res.status(200);
-		    res.end();
-		});
+	    me.lock(app, req, res, function () {
+			me.userFromToken(req["headers"], function(err, user_id) {
+				if (err) {
+					res.status(500);
+					res.send(err);
+				} else {
+					me.accountController.setAccount(user_id, req.body, function (err) {
+						if (err) {
+							res.status(500);
+				    		res.send(err);
+						} else {
+							res.status(200);
+				    		res.end();
+						}
+					});   
+				}
+			});
 	    });
 	})
 }

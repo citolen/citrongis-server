@@ -1,7 +1,9 @@
+var logger = require("../utility/logger.js");
+
 function lock(app, req, res, next) {
     app.oauth.authorise()(req,res,function (err) {
 	if (err) {
-	    console.log(err);
+		logger.error(err);
 	    res.status(301);
 	    res.end();
 	} else {

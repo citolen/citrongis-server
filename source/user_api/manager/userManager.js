@@ -45,10 +45,14 @@ userManager.getWithId = function(id, callback) {
     var userModel = require("../model/user.js");
 
     userModel.findOne({'id' : id}, function (err, result) {
-	var user = new userModel();
-
-	user.setData(result);
-	callback(user);
+        if (err) {
+            logger.internalError("A");
+            callback(err, null);
+        } else {
+            var user = new userModel();
+            user.setData(result);
+            callback(err, user);
+        }
     })
 }
 
