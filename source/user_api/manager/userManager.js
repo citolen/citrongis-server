@@ -46,7 +46,6 @@ userManager.getWithId = function(id, callback) {
 
     userModel.findOne({'id' : id}, function (err, result) {
         if (err) {
-            logger.internalError("A");
             callback(err, null);
         } else {
             var user = new userModel();

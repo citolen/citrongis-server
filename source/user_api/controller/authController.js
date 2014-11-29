@@ -50,11 +50,25 @@ authController.prototype.subscribe = function(data, callback) {
 
 authController.userFromToken = function(header, callback) {
     var accessTokenManager = require('../manager/accessTokenManager.js');
+    var userManager = require("../manager/userManager.js");
+
     if (header) {
         if (header["authorization"]) {
             var token = header["authorization"].replace("Bearer ", "");
             accessTokenManager.getWithId(token, function(err, result) {
-                callback(err, result.userId);
+                userManager.getWithId(result.userId, function(err, user) {
+                    if (err) {
+                        callback(err, null);
+                    } else {
+                        if (user.data == null) {
+                            var err = "Invalid user, using an non-active token";
+                            logger.error(err);
+                            callback(err, null);
+                        } else {
+                            callback(err, result.userId);
+                        }
+                    }
+                });
             });
         } else {
             var err = "Missing authorization information";

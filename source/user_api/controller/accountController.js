@@ -25,17 +25,21 @@ accountController.prototype.setAccount = function(user_id, new_data, callback) {
 	});
 }
 
-accountController.prototype.getAccount = function(user_id, new_data, callback) {
+accountController.prototype.getAccount = function(user_id, data, callback) {
     var me = this;
-    
+
     this.userManager.getWithId(user_id, function(err, user) {
     	if (err) {
     		callback(err, null);
     	} else {
-    		var result = me.switchDataGET(user, new_data);
-    		if (result == null) {
-    			err = "Invalid key for account";
-				logger.error(err);
+    		if (Object.keys(data).length == 0) {
+    			result = me.getAllAccount(user);
+    		} else {
+	    		var result = me.switchDataGET(user, data);
+	    		if (result == null) {
+	    			err = "Invalid key for account";
+					logger.error(err);
+				}
 			}
 			callback(err, result);
     	}
@@ -155,6 +159,28 @@ accountController.prototype.switchDataGET = function(user, data) {
 		return null;
 	}
     }
+    return result;
+}
+
+accountController.prototype.getAllAccount = function(user) {
+	var result= {};
+   
+	result["authInfo_email"] = user.data.authInfo.email;
+    result["authInfo_password"] = user.data.authInfo.password;
+    result["userInfo_firstName"] = user.data.userInfo.firstName;
+    result["userInfo_lastName"] = user.data.userInfo.lastName;
+    result["userInfo_dateOfBirth"] = user.data.userInfo.dateOfBirth;
+    result["userInfo_language"] = user.data.userInfo.language;
+    result["userInfo_profileType"] = user.data.userInfo.profileType;
+    result["userInfo_picture"] = user.data.userInfo.picture;
+    result["userInfo_contact_email"] = user.data.userInfo.contact.email;
+    result["userInfo_contact_phoneNumber"] = user.data.userInfo.contact.phoneNumber;
+    result["userInfo_contact_location"] = user.data.userInfo.contact.location;
+    result["userInfo_job_status"] = user.data.userInfo.job.status;
+    result["userInfo_job_company_name"] = user.data.userInfo.job.company.name;
+    result["userInfo_job_company_location"] = user.data.userInfo.job.company.location;
+    result["accountInfo_creationDate"] = user.data.accountInfo.creationDate;
+
     return result;
 }
 

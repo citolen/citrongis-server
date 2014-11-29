@@ -21,7 +21,9 @@ accountRouter.prototype.getAccount = function(app) {
 	    next();
 	})
 	.get(function (req, res, next) {
-	    me.lock(app, req, res, function () {
+	})
+	.post(function (req, res, next) {
+		me.lock(app, req, res, function () {
 			me.userFromToken(req["headers"], function(err, user_id) {
 				if (err) {
 					res.status(500);
@@ -39,8 +41,6 @@ accountRouter.prototype.getAccount = function(app) {
 				}
 			});
 	    })
-	})
-	.post(function (req, res, next) {
 	})
 }
 
@@ -68,7 +68,7 @@ accountRouter.prototype.setAccount = function(app) {
 				    		res.send(err);
 						} else {
 							res.status(200);
-				    		res.end();
+							res.send("Ok");
 						}
 					});   
 				}
