@@ -20,8 +20,7 @@ function subscribe(email_str, password_str, callback) {
 
 function login(username, password, client_id, client_secret, callback) {
     var login_form = {
-	grant_type: "password",
-        username: username,
+        email: username,
         password: password,
         client_id: client_id,
         client_secret: client_secret
@@ -113,13 +112,13 @@ function main()
 	},
 	function (callback) {
 	    getProfile({"authInfo_email": ""}, token1 + "1", function (value) {
-		assert(value.status, 301, true);
+		assert(value.status, 401, true);
 		callback(null, "")
 	    });
 	},
 	function (callback) {
 	    setProfile({"userInfo_firstName": ""}, token1 + "1", function (value) {
-		assert(value, 301, true);
+		assert(value, 401, true);
 		callback(null, "")
 	    });
 	},
@@ -147,6 +146,12 @@ function main()
 	function (callback) {
 	    setProfile({"userInfo_firstName": "UserName1", "userInfo_lastName": "lastnameUser1"}, token1 , function (value) {
 		assert(value, 200, true);
+		callback(null, "")
+	    });
+	},
+	function (callback) {
+	    setProfile({"userInfo_wrongKey": "UserName1", "userInfo_lastName": "lastnameUser1"}, token1 , function (value) {
+		assert(value, 500, true);
 		callback(null, "")
 	    });
 	},

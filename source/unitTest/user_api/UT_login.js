@@ -20,8 +20,7 @@ function subscribe(email_str, password_str, callback) {
 
 function login(username, password, client_id, client_secret, callback) {
     var login_form = {
-	grant_type: "password",
-        username: username,
+        email: username,
         password: password,
         client_id: client_id,
         client_secret: client_secret
