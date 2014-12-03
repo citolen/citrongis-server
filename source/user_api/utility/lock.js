@@ -5,6 +5,7 @@ function lock(app, req, res, next) {
 	if (err) {
 		logger.error(err);
 	    res.status(401);
+	    res.send(err["message"]);
 	    res.end();
 	} else {
 	    next();
