@@ -14,6 +14,7 @@
 	"async": "latest",
 	"express": "latest",
 	"jugglingdb": "latest",
-	"jugglingdb-mongodb": "latest"
+	"jugglingdb-mongodb": "latest",
+	"mongodb" : "latest"
     }
 }
