@@ -1,6 +1,7 @@
 var assert = require("../assert.js");
 var async = require("async");
 var request = require("request");
+require("../config.js");
 
 function subscribe(email_str, password_str, callback) {
     var subscribe_form = {
@@ -9,7 +10,7 @@ function subscribe(email_str, password_str, callback) {
     };
 
     var post_form = {
-	url: 'http://localhost:8080/auth/subscribe',
+	url: user_api_addr + '/auth/subscribe',
 	form: subscribe_form
     };
 
@@ -27,7 +28,7 @@ function login(username, password, client_id, client_secret, callback) {
     };
 
     var post_form = {
-	url: 'http://localhost:8080/auth/login',
+	url: user_api_addr + '/auth/login',
 	form: login_form
     };
 
@@ -62,7 +63,7 @@ function createTestAccount(mainCallback) {
 
 function getProfile(data, token, callback) {
     var post_form = {
-	url : "http://localhost:8080/account/get",
+	url : user_api_addr + "/account/get",
 	headers : { Authorization: 'Bearer ' + token},
 	form : data
     }
@@ -78,7 +79,7 @@ function getProfile(data, token, callback) {
 
 function setProfile(data, token, callback) {
     var post_form = {
-	url : "http://localhost:8080/account/set",
+	url : user_api_addr + "/account/set",
         headers : { Authorization: 'Bearer ' + token},
 	form : data
     }

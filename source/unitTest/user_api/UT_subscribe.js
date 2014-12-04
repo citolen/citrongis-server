@@ -1,6 +1,7 @@
 var assert = require("../assert.js");
 var request = require("request");
 var async = require("async");
+require('../config.js');
 
 function subscribe(email_str, password_str, callback) {
     var subscribe_form = {
@@ -9,7 +10,7 @@ function subscribe(email_str, password_str, callback) {
     };
 
     var post_form = {
-	url: 'http://localhost:8080/auth/subscribe',
+	url: user_api_addr + '/auth/subscribe',
 	form: subscribe_form
     };
 
