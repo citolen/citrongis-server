@@ -11,6 +11,7 @@ function authRouter(app) {
     this.login(app);
     this.logout(app);
     this.subscribe(app);
+    this.authorise(app);
 }
 
 authRouter.prototype.login = function(app) {
@@ -69,6 +70,29 @@ authRouter.prototype.subscribe = function(app) {
 		}
 	    });
 
+	})
+}
+
+authRouter.prototype.authorise = function(app) {
+	var me = this;
+
+    app.route("/auth/authorise")
+	.all(function (req, res, next) {
+	    console.log("Route : auth/authorise");    
+	    next();
+	})
+	.get(function (req, res, next) {
+	})
+	.post(function (req, res, next) {
+		me.authController.authorise(app, req, res, function(err, user_id) {
+	   		if (err) {
+	   			res.status(500);
+	   			res.send(err);
+	   		} else {
+	   			res.status(200);
+	   			res.send(user_id);
+	   		}
+	   	});
 	})
 }
 

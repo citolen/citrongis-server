@@ -62,6 +62,22 @@ authController.prototype.subscribe = function(data, callback) {
     }
 }
 
+authController.prototype.authorise = function(app, req ,res , callback) {
+    var me = this;
+    var lock = require("../utility/lock.js");
+
+    lock(app, req, res, function() {
+        authController.userFromToken(req.headers, function (err, user_id) {
+            if (!err) {
+                callback(err, user_id);
+            } else {
+                callback(err, null);
+            }
+
+        })
+    });
+}
+
 authController.userFromToken = function(header, callback) {
     var accessTokenManager = require('../manager/accessTokenManager.js');
     var userManager = require("../manager/userManager.js");
