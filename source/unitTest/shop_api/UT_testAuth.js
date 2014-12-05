@@ -62,20 +62,18 @@ function createTestAccount(mainCallback) {
     
 }
 
-function getProfile(data, token, callback) {
+function getId(token, callback) {
     var post_form = {
-	url : user_api_addr + "/account/get",
-	headers : { Authorization: 'Bearer ' + token},
-	form : data
-    }
+		url : shop_api_addr + "/testAuth",
+		headers : { Authorization: 'Bearer ' + token}
+    };
 
     request.post(post_form, function (err, res, body) {
-	try {	
-	    body = JSON.parse(body);
-	} catch (e) {}
-	callback({ "status" : res.statusCode, "data" : body});
+		try {
+	    	body = JSON.parse(body);
+		} catch (e) {}
+		callback({ "status" : res.statusCode, "data" : body});
     });
-
 }
 
 function main() 
@@ -86,18 +84,13 @@ function main()
     var id2;
 
     async.series([
-//	createTestAccount,
+	createTestAccount,
 	function (callback) { //getIDs
-
-
 		MongoClient.connect('mongodb://'+ mongo_db_addr + '/eip', function (err, db) {
 			if (err) {
 				return (console.log(err));
 			}
-
-			var collection = db.collection('User');
-
-			collection.find({}).toArray(function(err, docs) {
+			db.collection('User').find({}).toArray(function(err, docs) {
 				id1 = docs[0]._id;
 				id2 = docs[1]._id;
 				db.close();
@@ -118,13 +111,19 @@ function main()
 		token2 = value.token;
 		callback(null, "");
 	    });
-	}
-/*	function (callback) { //getProfile ==> Pont
-	    getProfile({"authInfo_email": ""}, token1 + "1", function (value) {
-		assert(value.status, 401, true);
-		callback(null, "")
+	},
+	function (callback) { //testAuth with good token
+	    getId(token1, function (value) {
+		assert(value.data, id1, true);
+		callback(null, "");
 	    });
-	}*/
+	},
+	function (callback) { //testAuth with bad token
+	    getId(token2 + 1, function (value) {
+		assert(value.data, id2, false);
+		callback(null, "");
+	    });
+	}
     ]);
 }
 
