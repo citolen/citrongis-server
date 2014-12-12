@@ -16,6 +16,10 @@ fsUtils.removePackage = function(path, callback) {
     });
 }
 
+fsUtils.readFile = function(path, callback) {
+    
+}
+
 fsUtils.unzipPackage = function(path, name, callback) {
 	var unzip = require("unzip");
 	

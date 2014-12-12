@@ -68,6 +68,10 @@ fileTransferController.prototype.getPackage = function (file, callback) {
 		} else {
 			console.log(output);
 			var fileInfos = require(output);//USE READ INSTEAD
+/*			fsUtils.readFile(output, function(err) {
+
+			})
+*/
 			fsUtils.removePackage(output, function(err) {
 				if (err) {
 					callback(err, null);

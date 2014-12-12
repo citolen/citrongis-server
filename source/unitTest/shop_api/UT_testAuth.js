@@ -69,10 +69,10 @@ function getId(token, callback) {
     };
 
     request.post(post_form, function (err, res, body) {
-		try {
-	    	body = JSON.parse(body);
-		} catch (e) {}
-		callback({ "status" : res.statusCode, "data" : body});
+	try {
+	    body = JSON.parse(body);
+	} catch (e) {}
+	callback({ "status" : res.statusCode, "data" : body});
     });
 }
 

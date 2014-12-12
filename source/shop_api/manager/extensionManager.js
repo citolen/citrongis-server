@@ -25,7 +25,6 @@ extensionManager.createNewExtension = function(extInfos, pathInfos, callback) {
 
 	if (extInfos.dependencies.length > 0) {
 		var async = require('async');
-		var dependencies_infos = [];
 		var queue = async.queue(function(data, callback_queue) {
 		        extensionManager.getIdByNV(data.name, data.version, function(err, id) {
 		        	if (err) {
@@ -37,7 +36,7 @@ extensionManager.createNewExtension = function(extInfos, pathInfos, callback) {
 		        			'version' : data.version,
 		        			'id' : id
 		        		}
-		        		dependencies_infos.push(infos)
+		        		ext.data.dependencies.push(infos)
 		        		callback_queue();
 		        	}
 		        });
