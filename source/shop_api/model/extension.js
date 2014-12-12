@@ -45,6 +45,17 @@ Extension.all = function (callback) {
     });
 }
 
+Extension.findOne = function(arg, callback) {
+	DB_Extension.all({where : arg}, function(err ,result) {
+		if (err) {
+			logger.error(err);
+			callback(err, null);
+		} else {
+			callback(err, result[0]);
+		}
+	})
+};
+
 Extension.have = function(arg, callback) {
 	DB_Extension.all({where : arg}, function(err ,result) {
 		if (err) {

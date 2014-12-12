@@ -5,16 +5,27 @@ function fsUtils() {
 
 }
 
-fsUtils.unzip = function(path, callback) {
+fsUtils.removePackage = function(path, callback) {
+    fs.unlink(path, function(err) {
+        if (err) {
+            logger.internalError(err);
+            callback(err);
+        } else {
+            callback(null);
+        }
+    });
+}
+
+fsUtils.unzipPackage = function(path, name, callback) {
 	var unzip = require("unzip");
 	
-	var output = "/tmp/package.json"; // NEED OTHER NAME
+	var output = "/tmp/package-" + name + ".json"; // NEED OTHER NAME
 
 	fs.createReadStream(path)
     	.pipe(unzip.Parse())
     	.on('entry', function (entry) {
         	var fileName = entry.path;
-        	var type = entry.type; // 'Directory' or 'File'                                                                                                                                                      
+        	var type = entry.type;                                                                                                                                                   
         	var size = entry.size;
         	if (fileName === "package.json") {
         	    entry.pipe(fs.createWriteStream(output));
@@ -24,7 +35,11 @@ fsUtils.unzip = function(path, callback) {
     	})
     	.on('close', function() {
     		callback(null, output);
-    	});
+    	})
+        .on('error', function(err) {
+            logger.internalError(err);
+            callback(err, output);
+        });
 }
 
 fsUtils.createPath = function(path, callback) {

@@ -23,9 +23,14 @@ fileTransferRouter.prototype.upload = function(app) {
 	})
 	.post(function (req, res, next) {
 	    me.fileTransferController.upload(req, function(err) {
-
+	    	if (err) {
+				res.status(500);
+				res.send(err);
+	    	} else {
+	    		res.status(200);
+	    		res.send("Ok");
+	    	}
 	    });
-	    res.send();
 	})
 }
 

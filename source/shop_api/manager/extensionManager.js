@@ -9,25 +9,68 @@ extensionManager.createNewExtension = function(extInfos, pathInfos, callback) {
 	var ext = new (require("../model/extension.js"))();
 
 	ext.data.informations.name = extInfos.name;
-	ext.data.informations.description = extInfos.description;
+	//ext.data.informations.description = extInfos.description;
 	ext.data.informations.version = extInfos.version;
-	ext.data.informations.date.creationDate = extInfos.creationDate;
-	ext.data.informations.date.lastUpload = time.format("YYYYMMDD:HHMMSS");
+	//ext.data.informations.date.creationDate = extInfos.creationDate;
+	ext.data.informations.date.lastUpload = time().format("YYYYMMDD:HHMMSS");
 	ext.data.informations.owner = null; // TO CHANGE
-	ext.data.informations.minClientVersion = extInfos.minClientVersion;
-	ext.data.contact.email = extInfos.contact.email;
-	ext.data.contact.phoneNumber = extInfos.contact.phoneNumber;
-	ext.data.contact.location = extInfos.contact.location;
+	//ext.data.informations.minClientVersion = extInfos.minClientVersion;
+	//ext.data.contact.email = extInfos.contact.email;
+	//ext.data.contact.phoneNumber = extInfos.contact.phoneNumber;
+	//ext.data.contact.location = extInfos.contact.location;
 	ext.data.storeInformations.fileSystem.path = pathInfos.path;
 	ext.data.storeInformations.file.filename = pathInfos.name;
 	ext.data.storeInformations.file.size = pathInfos.size;
 	ext.data.storeInformations.file.type = "ZipFile";
 
-	for (var i = 0; i < extInfos.dependencies.length; i++) {
-    	
-    }
+	if (extInfos.dependencies.length > 0) {
+		var async = require('async');
+		var dependencies_infos = [];
+		var queue = async.queue(function(data, callback_queue) {
+		        extensionManager.getIdByNV(data.name, data.version, function(err, id) {
+		        	if (err) {
+		        		queue.kill();
+		        		callback(err);
+		        	} else {
+		        		var infos = {
+		        			'name' : data.name,
+		        			'version' : data.version,
+		        			'id' : id
+		        		}
+		        		dependencies_infos.push(infos)
+		        		callback_queue();
+		        	}
+		        });
+		}, 1);
 
-	ext.save(callback);
+	    queue.drain = function() {
+	    	ext.save(callback);
+	    }
+
+		for (var i = 0; i < extInfos.dependencies.length; i++) {
+	    	queue.push(extInfos.dependencies[i])
+	    }
+	} else {
+		ext.save(callback);
+	}
+}
+
+extensionManager.getIdByNV = function(name, version, callback) {
+	var ext = require("../model/extension.js");
+
+	ext.findOne({'informations.name' : name, "informations.version" : version}, function (err, result) {
+		if (err) {
+			callback(err, null);
+		} else {
+			if (result.id != null) {
+				callback(null, result.id);
+			} else {
+				var err = "Can't find any extension with this name and version";
+				logger.error(err);
+				callback(err, null);
+			}
+		}
+	});
 }
 
 extensionManager.haveTheseByNV = function(NamesVersions, callback) {
@@ -36,7 +79,7 @@ extensionManager.haveTheseByNV = function(NamesVersions, callback) {
 	var queue = async.queue(function(data, callback_queue) {
         extensionManager.haveThisByNV(data.name, data.version, function(err, exist) {
         	if (err) {
-        		queue.kill(); //ERROR callback ?
+        		queue.kill();
         		callback(err, null);
         	} else if (!exist) {
 				queue.kill();				
