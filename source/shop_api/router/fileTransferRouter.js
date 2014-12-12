@@ -1,6 +1,7 @@
 function fileTransferRouter(app) {
 
     // Create controller instance
+    this.fileTransferController = new (require("../controller/fileTransferController.js"))();
 
     // Get Function
     this.lock = require("../utility/lock.js");
@@ -21,6 +22,10 @@ fileTransferRouter.prototype.upload = function(app) {
 	.get(function (req, res, next) {
 	})
 	.post(function (req, res, next) {
+	    me.fileTransferController.upload(req, function(err) {
+
+	    });
+	    res.send();
 	})
 }
 

@@ -36,14 +36,25 @@ Extension.prototype.debug = function () {
 */
 Extension.all = function (callback) {
     DB_Extension.all(null, function(err, result) {
-	if (err) {
-	    logger.error(err);
-	    callback(err, null);
-	} else {
-	    callback(err, result);
-	}
+		if (err) {
+		    logger.error(err);
+		    callback(err, null);
+		} else {
+		    callback(err, result);
+		}
     });
 }
+
+Extension.have = function(arg, callback) {
+	DB_Extension.all({where : arg}, function(err ,result) {
+		if (err) {
+			logger.error(err);
+			callback(err, null);
+		} else {
+			callback(err, (result.length != 0 ? true : false));
+		}
+	})
+};
 
 
 module.exports = Extension;
