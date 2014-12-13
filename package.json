@@ -15,6 +15,11 @@
 	"express": "latest",
 	"jugglingdb": "latest",
 	"jugglingdb-mongodb": "latest",
-	"mongodb" : "latest"
+	"mongodb" : "latest",
+	"fs" : "latest",
+	"multiparty" : "latest",
+	"unzip" : "latest",
+	"mkdirp" : "latest",
+	"moment" : "latest" 
     }
 }
