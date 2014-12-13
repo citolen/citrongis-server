@@ -5,7 +5,7 @@ function fsUtils() {
 
 }
 
-fsUtils.removePackage = function(path, callback) {
+fsUtils.removeFile = function(path, callback) {
     fs.unlink(path, function(err) {
         if (err) {
             logger.internalError(err);
@@ -17,7 +17,14 @@ fsUtils.removePackage = function(path, callback) {
 }
 
 fsUtils.readFile = function(path, callback) {
-    
+    fs.readFile(path, 'utf8', function(err, data) {
+        if (err) {
+            logger.internalError(err);
+            callback(err, null);
+        } else {
+            callback(null, data);
+        }
+    });
 }
 
 fsUtils.unzipPackage = function(path, name, callback) {

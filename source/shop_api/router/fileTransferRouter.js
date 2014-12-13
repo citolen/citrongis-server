@@ -22,15 +22,17 @@ fileTransferRouter.prototype.upload = function(app) {
 	.get(function (req, res, next) {
 	})
 	.post(function (req, res, next) {
-	    me.fileTransferController.upload(req, function(err) {
-	    	if (err) {
-				res.status(500);
-				res.send(err);
-	    	} else {
-	    		res.status(200);
-	    		res.send("Ok");
-	    	}
-	    });
+		me.lock(req.headers, function(err , user_id) {
+		    me.fileTransferController.upload(req, user_id, function(err) {
+		    	if (err) {
+					res.status(500);
+					res.send(err);
+		    	} else {
+		    		res.status(200);
+		    		res.send("Ok");
+		    	}
+		    });
+		});
 	})
 }
 

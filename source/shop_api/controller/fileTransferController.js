@@ -6,48 +6,84 @@ function fileTransferController() {
 
 }
 
-fileTransferController.prototype.upload = function(req, callback) {
+fileTransferController.prototype.upload = function(req, user_id, callback) {
 	var extensionManager = require("../manager/extensionManager.js");
+	var me = this;
+
+	me.getFileFromRequest(req, callback, function(file) {
+		me.getPackage(file, callback, function(fileInfos) {
+			me.checkUploadRight(fileInfos, user_id, callback, function() {
+				me.checkDependencies(fileInfos["dependencies"], callback, function () {
+					me.StoreInFs(fileInfos, file, callback, function (pathInfos) {
+						extensionManager.createNewExtension(fileInfos, pathInfos, user_id, function(err) {
+							callback(err);
+						});
+					});	
+				});
+			});
+		});
+	});
+}
+
+fileTransferController.prototype.checkUploadRight = function(fileInfos, user_id, callbackErr, callback) {
+	var extensionManager = require("../manager/extensionManager.js");
+	var me = this;
+
+	extensionManager.getOwnerByName(fileInfos.name, function(err, owner) {
+		if (err) {
+			callbackErr(err);
+		} else {
+			if (owner == null) {
+				callback();
+			} else {
+				if (owner == user_id) {
+					callback();
+				} else {
+					var err = "You are not permitted to upload an extensions with this name";
+					logger.error(err);
+					callbackErr(err);
+				}
+			}
+		}
+	});
+}
+
+fileTransferController.prototype.getFileFromRequest = function(req, callbackErr, callback) {
 	var multiparty = require("multiparty");
 	var form = new multiparty.Form();
 	var me = this;
 
 	form.parse(req, function(err, fields, files) {
 		if (err) {
-	    	logger.error(err);
-	    	callback(err);
+	    	logger.error(err.message);
+	    	callbackErr(err.message);
 		} else {
 			if (files["file"].length == 1) {
 				var file = files["file"][0];
-				me.getPackage(file, function(err, fileInfos) {
-					console.log(fileInfos);
-					//check name
-					me.checkDependencies(fileInfos["dependencies"], function (err) {
-						if (err) {
-							callback(err)
-						} else {
-							var pathInfos = me.createPath(fileInfos);
-							console.log(pathInfos);
-							pathInfos.size = file.size;
-							fsUtils.move(file["path"], pathInfos.fullPath, function (err) {
-								extensionManager.createNewExtension(fileInfos, pathInfos, function(err) {
-									if (err) {
-										callback(err);
-									} else {
-										callback(null);
-									}
-								});
-							})
-						}
-					});
-				});
+				callback(file);
 			} else {
 				var err = "Only one file has to be given";
 				logger.error(err);
-				callback(err);
-			}		
+				console.log("err2");
+				callbackErr(err);
+			}
 		}
-	})
+	});
+}
+
+fileTransferController.prototype.StoreInFs = function(fileInfos, file, callbackErr, callback) {
+	var me = this;
+	var pathInfos = me.createPath(fileInfos);
+	
+	pathInfos.size = file.size;
+
+	fsUtils.move(file["path"], pathInfos.fullPath, function (err) {
+		if (err) {
+			callbackErr(err);
+		} else {
+			callback(pathInfos);
+		}
+	});
 }
 
 fileTransferController.prototype.createPath = function(fileInfos) {
@@ -59,46 +95,42 @@ fileTransferController.prototype.createPath = function(fileInfos) {
 	return path;
 }
 
-fileTransferController.prototype.getPackage = function (file, callback) {
+fileTransferController.prototype.getPackage = function (file, callbackErr, callback) {
 	var filename = file.originalFilename.split(".zip")[0];
-	console.log(filename);
 	fsUtils.unzipPackage(file.path, filename, function (err, output) {
 		if (err) {
-			callback(err, null);
+			callbackErr(err);
 		} else {
-			console.log(output);
-			var fileInfos = require(output);//USE READ INSTEAD
-/*			fsUtils.readFile(output, function(err) {
-
-			})
-*/
-			fsUtils.removePackage(output, function(err) {
-				if (err) {
-					callback(err, null);
-				} else {
-					callback(err, fileInfos)
-				}
-			})
+			fsUtils.readFile(output, function(err, data) {
+				var fileInfos = JSON.parse(data);
+				fsUtils.removeFile(output, function(err) {
+					if (err) {
+						callbackErr(err);
+					} else {
+						callback(fileInfos)
+					}
+				})
+			});
 		}
 	})
 }
 
-fileTransferController.prototype.checkDependencies = function(dependencies, callback) {
+fileTransferController.prototype.checkDependencies = function(dependencies, callbackErr, callback) {
 	var extensionManager = require("../manager/extensionManager.js");
 	if (dependencies.length > 0) {
 		extensionManager.haveTheseByNV(dependencies, function(err, bool, missing) {
 			if (err) {
-				callback(err);
+				callbackErr(err);
 			} else if (bool == false) {
 				var err = "The extension : " + missing.name + " (v : " + missing.version + ") doesn't exist";
 				logger.error(err);
-				callback(err);
+				callbackErr(err);
 			} else {
-				callback(null);
+				callback();
 			}				
 		});
 	} else {
-		callback(null);
+		callback();
 	}
 	
 }

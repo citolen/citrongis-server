@@ -4,7 +4,7 @@ function extensionManager() {
 
 }
 
-extensionManager.createNewExtension = function(extInfos, pathInfos, callback) {
+extensionManager.createNewExtension = function(extInfos, pathInfos, user_id, callback) {
 	var time = require('moment');
 	var ext = new (require("../model/extension.js"))();
 
@@ -13,7 +13,7 @@ extensionManager.createNewExtension = function(extInfos, pathInfos, callback) {
 	ext.data.informations.version = extInfos.version;
 	//ext.data.informations.date.creationDate = extInfos.creationDate;
 	ext.data.informations.date.lastUpload = time().format("YYYYMMDD:HHMMSS");
-	ext.data.informations.owner = null; // TO CHANGE
+	ext.data.informations.owner = user_id;
 	//ext.data.informations.minClientVersion = extInfos.minClientVersion;
 	//ext.data.contact.email = extInfos.contact.email;
 	//ext.data.contact.phoneNumber = extInfos.contact.phoneNumber;
@@ -72,6 +72,23 @@ extensionManager.getIdByNV = function(name, version, callback) {
 	});
 }
 
+extensionManager.getOwnerByName = function(name, callback) {
+	var ext = require("../model/extension.js");
+
+	ext.findOne({'informations.name' : name}, function (err, result) {
+		if (err) {
+			callback(err, null);
+		} else {
+			console.log(result);
+			if (result && result.informations.owner != null) {
+				callback(null, result.informations.owner);
+			} else {
+				callback(null, null);
+			}
+		}
+	});
+}
+
 extensionManager.haveTheseByNV = function(NamesVersions, callback) {
 	var async = require('async');
 
@@ -109,6 +126,7 @@ extensionManager.haveThisByNV = function(name, version, callback) {
 		}
 	});
 }
+
 
 
 
