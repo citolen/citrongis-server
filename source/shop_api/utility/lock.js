@@ -28,8 +28,9 @@ function askForAuth(authorization, callback) {
 		if (!err) {
 			if (res.statusCode && res.statusCode == 200) {
 				callback(err, body);
-			} else {		
-				var err = "UserApi refused the connection. Return of userApi : " + body;
+			} else {
+				err = new Error("UserApi refused the connection. Return of userApi : " + body);
+				err.statusCode = 401;
 		        logger.error(err);
 		        callback(err, null);
 			}

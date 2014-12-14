@@ -63,4 +63,5 @@ __MongoDatabasePort__ = "27017";
 **		Warning: Changing this value may result in data loss.
 **
 */
+__TMPDir__ = "/tmp/";
 __UploadDir__ = "/home/pretotn/uploaddir/";

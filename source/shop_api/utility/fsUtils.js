@@ -1,5 +1,6 @@
 var logger = require("../utility/logger.js");
 var fs = require("fs");
+require("../config/config.js");
 
 function fsUtils() {
 
@@ -49,7 +50,7 @@ fsUtils.readFile = function(path, callback) {
 fsUtils.unzipPackage = function(path, name, callback) {
 	var unzip = require("unzip");
 	
-    var folder = "/tmp/tmp2/";
+    var folder = __TMPDir__;
 	var output = folder + "package-" + name + ".json";
 
 
