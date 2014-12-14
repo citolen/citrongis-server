@@ -102,14 +102,25 @@ fileTransferController.prototype.getPackage = function (file, callbackErr, callb
 			callbackErr(err);
 		} else {
 			fsUtils.readFile(output, function(err, data) {
-				var fileInfos = JSON.parse(data);
-				fsUtils.removeFile(output, function(err) {
-					if (err) {
+				if (err) {
+					callbackErr(err);
+				} else {
+					try {
+						var fileInfos = JSON.parse(data);
+					} catch (e) {
+						var err = "Wrong package.json format";
+						logger.error(err);
 						callbackErr(err);
-					} else {
-						callback(fileInfos)
-					}
-				})
+						return;
+					}		
+					fsUtils.removeFile(output, function(err) {
+						if (err) {
+							callbackErr(err);
+						} else {
+							callback(fileInfos)
+						}
+					})
+				}
 			});
 		}
 	})

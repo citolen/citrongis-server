@@ -79,7 +79,6 @@ extensionManager.getOwnerByName = function(name, callback) {
 		if (err) {
 			callback(err, null);
 		} else {
-			console.log(result);
 			if (result && result.informations.owner != null) {
 				callback(null, result.informations.owner);
 			} else {
