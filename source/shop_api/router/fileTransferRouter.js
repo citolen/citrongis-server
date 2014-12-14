@@ -25,11 +25,13 @@ fileTransferRouter.prototype.upload = function(app) {
 		me.lock(req.headers, function(err , user_id) {
 		    me.fileTransferController.upload(req, user_id, function(err) {
 		    	if (err) {
-		    		if (err.statusCode)
+		    		if (err.statusCode) {
 		    			res.status(err.statusCode);
-		    		else
-						res.status(500);
-					res.send(err);
+		    			res.send(err.message);
+		    		} else {
+		    			res.status(500);
+						res.send(err);
+		    		}	
 		    	} else {
 		    		res.status(200);
 		    		res.send("Ok");
