@@ -6,6 +6,73 @@ function fileTransferController() {
 
 }
 
+fileTransferController.prototype.download = function(data, res, callback) {
+	var me = this;
+
+	me.getFileInfosFromRequest(data, callback, function (name, version) {
+		me.IfExtExists(name, version, callback, function(extInfos) {
+			var fullPath = extInfos.storeInformations.fileSystem.path + extInfos.storeInformations.file.filename;
+			res.download(fullPath, extInfos.storeInformations.file.filename, function (err) {
+				if (err) {
+					logger.error(err);
+				} else {
+					logger.success();
+				}
+			})
+		})
+	})
+}
+
+fileTransferController.prototype.getFileInfosFromRequest = function (data, callbackErr, callback) {
+	var me = this;
+
+	if (data && data.name && data.version) {
+		callback(data.name, data.version);
+	} else {
+		var err = "Missing argument, name and version are needed";
+		logger.error(err);
+		callbackErr(err);
+	}
+}
+
+fileTransferController.prototype.IfExtExists = function (name, version, callbackErr, callback) {
+	var me = this;
+
+	me.IfExtExistsInDB(name, version, callbackErr, function (extInfos) {
+		var fullPath = extInfos.storeInformations.fileSystem.path + extInfos.storeInformations.file.filename;
+		me.IfExtExistsInFS(fullPath, callbackErr, function () {
+			callback(extInfos);
+		})
+	})
+}
+
+fileTransferController.prototype.IfExtExistsInDB = function (name, version, callbackErr, callback) {
+	var extensionManager = require("../manager/extensionManager.js");
+	var me = this;
+
+	extensionManager.getByNV(name, version, function (err, result) {
+		if (err) {
+			callbackErr(err);
+		} else {
+			callback(result);
+		}
+	})
+}
+
+fileTransferController.prototype.IfExtExistsInFS = function (path, callbackErr, callback) {
+	var me = this;
+
+	fsUtils.exists(path, function(exits) {
+		if (!exits) {
+			var err = "can't read file : " + path;
+            logger.internalError(err);
+            callbackErr(err);
+		} else {
+			callback();
+		}
+	})
+}
+
 fileTransferController.prototype.upload = function(req, user_id, callback) {
 	var extensionManager = require("../manager/extensionManager.js");
 	var me = this;

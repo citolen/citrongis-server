@@ -51,6 +51,16 @@ fileTransferRouter.prototype.download = function(app) {
 		res.send("download");
 	})
 	.post(function (req, res, next) {
+		me.fileTransferController.download(req.body, res, function(err) {
+			if (err) {
+				res.status(500);
+				res.send(err);
+			} else {
+				logger.success();
+		    	res.status(200);
+	    		res.send("Ok");
+			}
+		});
 	})
 }
 
