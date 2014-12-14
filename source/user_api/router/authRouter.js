@@ -1,3 +1,5 @@
+var logger = require("../utility/logger.js");
+
 function authRouter(app) {
 
     // Create controller instance
@@ -26,6 +28,11 @@ authRouter.prototype.login = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
+		res.sendtmp = res.send;
+		res.send = function(value) {
+			logger.success();
+			res.sendtmp(value);
+		}
 	    me.authController.login(req, res, next, function(err) {
 	    	// Only called if internal error happen when try using grant.login()
 	    	if (err) {
@@ -62,10 +69,11 @@ authRouter.prototype.subscribe = function(app) {
 	.post(function (req, res, next) {
 	    me.authController.subscribe(req.body, function(err) {
 		if (err) {
-			res.status(500);
+		    res.status(500);
 		    res.send(err)
 		} else {
-			res.status(200);
+			logger.success();
+		    res.status(200);
 		    res.send("Ok");
 		}
 	    });
@@ -74,8 +82,8 @@ authRouter.prototype.subscribe = function(app) {
 }
 
 authRouter.prototype.authorise = function(app) {
-	var me = this;
-
+    var me = this;
+    
     app.route("/auth/authorise")
 	.all(function (req, res, next) {
 	    console.log("Route : auth/authorise");    
@@ -84,15 +92,16 @@ authRouter.prototype.authorise = function(app) {
 	.get(function (req, res, next) {
 	})
 	.post(function (req, res, next) {
-		me.authController.authorise(app, req, res, function(err, user_id) {
-	   		if (err) {
-	   			res.status(500);
-	   			res.send(err);
-	   		} else {
-	   			res.status(200);
-	   			res.send(user_id);
-	   		}
-	   	});
+	    me.authController.authorise(app, req, res, function(err, user_id) {
+	   	if (err) {
+	   	    res.status(500);
+	   	    res.send(err);
+	   	} else {
+	   		logger.success();
+	   	    res.status(200);
+	   	    res.send(user_id);
+	   	}
+	    });
 	})
 }
 

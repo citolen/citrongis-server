@@ -4,7 +4,13 @@ function logger() {
 logger.error = function(message) {
 	var color = require("colors");
 
-	console.log(message.yellow);
+	console.log("\t" + message.yellow);
+}
+
+logger.success = function() {
+	var color = require("colors");
+
+	console.log("\t-> Success".green);
 }
 
 logger.internalError = function(message) {

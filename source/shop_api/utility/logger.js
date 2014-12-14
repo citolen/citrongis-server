@@ -4,7 +4,7 @@ function logger() {
 logger.error = function(message) {
 	var color = require("colors");
 
-	console.log(message.yellow);
+	console.log("\t" + message.yellow);
 }
 
 logger.internalError = function(message) {
@@ -21,7 +21,7 @@ logger.internalError = function(message) {
 logger.success = function() {
 	var color = require("colors");
 
-	console.log("-> Success".green);
+	console.log("\t-> Success".green);
 }
 
 module.exports = logger;
