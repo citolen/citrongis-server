@@ -1,3 +1,5 @@
+var logger = require("../utility/logger.js");
+
 function authRouter(app) {
 
     // Create controller instance
@@ -20,11 +22,12 @@ authRouter.prototype.testAuth = function(app) {
 	.get(function (req, res, next) {
 	})
 	.post(function (req, res, next) {
-		me.lock(req.headers, function(err , user_id) {
+		me.lock(req.headers, res, function(err , user_id) {
 			if (err) {
 				res.status(500);
 				res.send(err);
 			} else {
+				logger.success();
 				res.status(200);
 				res.send(user_id);
 			}

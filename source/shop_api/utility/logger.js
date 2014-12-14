@@ -18,4 +18,10 @@ logger.internalError = function(message) {
 	console.log("---------------------------------------".red);
 }
 
+logger.success = function() {
+	var color = require("colors");
+
+	console.log("-> Success".green);
+}
+
 module.exports = logger;
