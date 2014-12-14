@@ -1,3 +1,5 @@
+var logger = require("../utility/logger.js");
+
 function accountRouter(app) {
 
     // Create controller instance
@@ -23,23 +25,24 @@ accountRouter.prototype.getAccount = function(app) {
 	.get(function (req, res, next) {
 	})
 	.post(function (req, res, next) {
-		me.lock(app, req, res, function () {
-			me.userFromToken(req["headers"], function(err, user_id) {
-				if (err) {
-					res.status(500);
-					res.send(err);
-				} else {
-					me.accountController.getAccount(user_id, req.body, function(err, data) {
-						if (err) {
-							res.status(500);
-							res.send(err);
-						} else {
-							res.status(200);
-							res.send(data);
-						}
-				    });
-				}
+	    me.lock(app, req, res, function () {
+		me.userFromToken(req["headers"], function(err, user_id) {
+		    if (err) {
+			res.status(500);
+			res.send(err);
+		    } else {
+			me.accountController.getAccount(user_id, req.body, function(err, data) {
+			    if (err) {
+				res.status(500);
+				res.send(err);
+			    } else {
+			    logger.success();
+				res.status(200);
+				res.send(data);
+			    }
 			});
+		    }
+		});
 	    })
 	})
 }
@@ -57,22 +60,23 @@ accountRouter.prototype.setAccount = function(app) {
 	})
 	.post(function (req, res, next) {
 	    me.lock(app, req, res, function () {
-			me.userFromToken(req["headers"], function(err, user_id) {
-				if (err) {
-					res.status(500);
-					res.send(err);
-				} else {
-					me.accountController.setAccount(user_id, req.body, function (err) {
-						if (err) {
-							res.status(500);
-				    		res.send(err);
-						} else {
-							res.status(200);
-							res.send("Ok");
-						}
-					});   
-				}
-			});
+		me.userFromToken(req["headers"], function(err, user_id) {
+		    if (err) {
+			res.status(500);
+			res.send(err);
+		    } else {
+			me.accountController.setAccount(user_id, req.body, function (err) {
+			    if (err) {
+				res.status(500);
+				res.send(err);
+			    } else {
+			    logger.success();
+				res.status(200);
+				res.send("Ok");
+			    }
+			});   
+		    }
+		});
 	    });
 	})
 }

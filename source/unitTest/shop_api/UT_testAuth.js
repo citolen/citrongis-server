@@ -120,7 +120,7 @@ function main()
 	},
 	function (callback) { //testAuth with bad token
 	    getId(token2 + 1, function (value) {
-		assert(value.data, id2, false);
+		assert(value.status, 401, true);
 		callback(null, "");
 	    });
 	}
