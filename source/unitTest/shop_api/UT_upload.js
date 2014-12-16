@@ -144,7 +144,14 @@ console.log("User 2 : Upload citrongis-app-v2");
 assert(value, 500, true);
 callback(null, "");
 });
-}
+},
+function (callback) { //upload testappli1-v2 with invalid user(bad)
+upload("./shop_api/ressources/testapli1-v2.zip", token1 + 1, function(value) {
+console.log("Invalid User : Upload testapli1-v2");
+assert(value, 401, true);
+callback(null, "");
+});
+},
 ]);
 }
 main()
