@@ -78,68 +78,17 @@ function upload(path, token, callback) {
     form.append('file', fs.createReadStream(path));
 }
 
-function download(name, version, callback) {
+function download(myName, myVersion, callback) {
     var download_form = {
-        name: name,
-        version: version
+        name: myName,
+        version: myVersion
     };
 
-    var post_form = {
-	url: shop_api_addr + '/download',
-	form: download_form
-    };
-
-    request.post(post_form, function (err, res, body) {
-	try {	
-	    body = JSON.parse(body);
-	} catch (e) {}
-	
-	// affiche le contenu de la reponse
-//	console.log(res);
-
-	/*Technique n1*/
-	/*
-	** Recupere le buffer contenu dans res.body et ecrit un fichier .zip avec ce contenu 
-	** Methode perso (rien ne prouve que cela peut marcher).
-	** 
-	** -> il faut certainement jouer sur le encoding
-	*/
-/*
-	var fs = require('fs');
-	fs.writeFile("/tmp/testdownload.zip", res.body, {'encoding' : 'binary'}, function (err) {
-		if (err) {
-			console.log(err);
-			callback();	
-		} else {
-			console.log("OK");
-			callback();	
-		}	
-	});
-*/
-
-	/*Technique n2*/
-	/*
-	** Creer un object writeStrem (genre de buffer)
-	** Utilise res (qui est un stream) pour ecrire dans le writeStream
-	** Methode officiel qui doit marcher , mais fait un zip vide
-	*/
-/*
-	var ws = fs.createWriteStream("/tmp/testdownload.zip");
-	res.pipe(ws);
-
-	res.on("end", function() {
-	    console.log("event end");
-	})
-	
-	res.on("data", function(chunk) {
-	    console.log("event data");
-	});
-
-	ws.on('error', function (err) {
-	    console.log(err)
-	});
-*/	
-    });   
+    request.post({url: shop_api_addr + '/download', form: {name: myName, version: myVersion}})
+    .on('error', function(err) {
+    		console.log(err)
+	  	})
+  	.pipe(fs.createWriteStream('/tmp/testdownload.zip')) 
 }
 
 function main() 
