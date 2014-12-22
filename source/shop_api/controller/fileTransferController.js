@@ -287,7 +287,7 @@ fileTransferController.prototype.getInfos = function(data, callback) {
 			if (err) {
 				callback(err);
 			} else {
-				if (!data["keys"] || Object.keys(data["keys"]).length == 0) {l
+				if (!data["keys"] || Object.keys(data["keys"]).length == 0) {
     				var result = me.getAllInfos(ext);
     			} else {
     				var result = me.switchDataGET(ext, data["keys"]);
