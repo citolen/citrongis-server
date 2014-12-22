@@ -75,10 +75,25 @@ function upload(path, token, callback) {
 	form.append('file', fs.createReadStream(path));
 }
 
+function getInformations(data, token, callback) 
+{
+	var post_form = {
+		url : shop_api_addr + "/ext/getInfos",
+		headers : { Authorization: 'Bearer ' + token},
+		form : data
+    }
+
+    request.post(post_form, function (err, res, body) {
+		try {	
+		    body = JSON.parse(body);
+		} catch (e) {}
+		callback({ "status" : res.statusCode, "data" : body});
+    });
+}
+
 function main()
 {
 	var token1;
-	var token2;
 
 	async.series([
 		createTestAccount,
@@ -87,21 +102,6 @@ function main()
 			console.log("Login user 1");
 			assert(value.status, 200, true);
 			token1 = value.token;
-			callback(null, "");
-			});
-		},
-		function (callback) { //Login user2
-			login("user2@epitech.eu", "password2", "testclientid", "testclientsecret", function(value) {
-			console.log("Login user 2");
-			assert(value.status, 200, true);
-			token2 = value.token;
-			callback(null, "");
-			});
-		},
-		function (callback) { //upload citrongis-app-v1 without dependencies (bad)
-			upload("./shop_api/ressources/citrongis-app.zip", token1, function(value) {
-			console.log("User 1 : Upload citrongis-app-v1 without dependencies");
-			assert(value, 500, true);
 			callback(null, "");
 			});
 		},
@@ -126,41 +126,67 @@ function main()
 			callback(null, "");
 			});
 		},
-		function (callback) { //upload testappli1-v1 with user 2 (bad right)
-			upload("./shop_api/ressources/testapli1.zip", token2, function(value) {
-			console.log("User 2 : Upload testapli1-v1 (bad right)");
-			assert(value, 500, true);
-			callback(null, "");
-			});
+		function (callback) { //get citrongis-app-v1 informations
+	    var s0 = {	
+	    			"name": "citrongis-first-app",
+	    			"version": "0.0.1",
+	    			"keys": {
+	    				"informations_version": "",
+	    				"informations_name": "",
+						"accessInformation_isPrivate": ""
+	    			}
+	    	     };
+			console.log("Get citrongis-app-v1 informations");
+		    getInformations(s0, token1, function (value) {
+		    	var s1 = {
+					"informations_version": "0.0.1",
+		    		"informations_name": "citrongis-first-app",
+					"accessInformation_isPrivate": false
+		    	}
+		    	assert(JSON.stringify(value.data), JSON.stringify(s1), true);
+				callback(null, "")
+		    });
 		},
-		function (callback) { //upload testappli1-v2 with user 2 (bad right)
-			upload("./shop_api/ressources/testapli1-v2.zip", token2, function(value) {
-			console.log("User 2 : Upload testapli1-v2 (bad right)");
-			assert(value, 500, true);
-			callback(null, "");
-			});
+		function (callback) { //get citrongis-app-v1 informations (Bad User)
+	    var s0 = {	
+	    			"name": "citrongis-first-app",
+	    			"version": "0.0.1",
+	    			"keys": {
+	    				"informations_version": "",
+	    				"informations_name": "",
+						"accessInformation_isPrivate": ""
+	    			}
+	    	     };
+			console.log("Get citrongis-app-v1 informations with bad user");
+		    getInformations(s0, token1 + 1 , function (value) {
+		    	var s1 = {
+					"informations_version": "0.0.1",
+		    		"informations_name": "citrongis-first-app",
+					"accessInformation_isPrivate": false
+		    	}
+		    	assert(value.status, 401, true);
+				callback(null, "")
+		    });
 		},
-		function (callback) { //upload testappli1-v2 with user 1 (good)
-			upload("./shop_api/ressources/testapli1-v2.zip", token1, function(value) {
-			console.log("User 2 : Upload testapli1-v2");
-			assert(value, 200, true);
-			callback(null, "");
-			});
-		},
-		function (callback) { //upload citrongis-app-v2 with user 1 (bad dependencies)
-			upload("./shop_api/ressources/citrongis-app-v2.zip", token1, function(value) {
-			console.log("User 2 : Upload citrongis-app-v2");
-			assert(value, 500, true);
-			callback(null, "");
-			});
-		},
-		function (callback) { //upload testappli1-v2 with invalid user(bad)
-			upload("./shop_api/ressources/testapli1-v2.zip", token1 + 1, function(value) {
-			console.log("Invalid User : Upload testapli1-v2");
-			assert(value, 401, true);
-			callback(null, "");
-			});
-		},
+		function (callback) { //get citrongis-app-v1 informations (Bad keys)
+	    var s0 = {	
+	    			"name": "citrongis-first-app",
+	    			"version": "0.0.1",
+	    			"keys": {
+	    				"sdsdsdsd": ""
+	    			}
+	    	     };
+			console.log("Get citrongis-app-v1 informations with bad key");
+		    getInformations(s0, token1, function (value) {
+		    	var s1 = {
+					"informations_version": "0.0.1",
+		    		"informations_name": "citrongis-first-app",
+					"accessInformation_isPrivate": false
+		    	}
+		    	assert(value.status, 500, true);
+				callback(null, "")
+		    });
+		}
 	]);
 }
 
