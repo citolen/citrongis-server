@@ -121,8 +121,29 @@ function main()
 		callback(null, "");
 	    });
 	},
+	function (callback) { //upload testapli2-v1  with user 1 (good)
+	    upload("./shop_api/ressources/testapli2.zip", token1, function(value) {
+		console.log("User 1 : Upload testapli2-v1");
+		assert(value, 200, true);
+		callback(null, "");
+	    });
+	},
+	function (callback) { //upload citrongis-app.zip  with user 1 (good)
+	    upload("./shop_api/ressources/citrongis-app.zip", token1, function(value) {
+		console.log("User 1 : Upload citrongis-app.zip");
+		assert(value, 200, true);
+		callback(null, "");
+	    });
+	},
+	function (callback) { //upload main-app.zip  with user 1 (good)
+	    upload("./shop_api/ressources/main-app.zip", token1, function(value) {
+		console.log("User 1 : Upload main-app.zip");
+		assert(value, 200, true);
+		callback(null, "");
+	    });
+	},
 	function (callback) { //download testapli1-v1
-	    download("testapli1", "0.0.1", function (value) {
+	    download("main-app", "0.0.1", function (value) {
 
 	    })
 	}  

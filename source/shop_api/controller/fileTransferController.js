@@ -6,11 +6,24 @@ function fileTransferController() {
 
 }
 
-fileTransferController.prototype.download = function(data, res, callback) {
+fileTransferController.prototype.download = function(data, res, user_id, callback) {
 	var me = this;
 
 	me.getFileInfosFromRequest(data, callback, function (name, version) {
 		me.IfExtExists(name, version, callback, function(extInfos) {
+			
+			/*
+			me.getAllDependenciesPath(extInfos, callback, function(paths) {
+				me.getOnlyNeededDependencies(paths, callback, function(paths) {
+
+				})
+			})
+*/
+
+
+
+
+
 			var fullPath = extInfos.storeInformations.fileSystem.path + extInfos.storeInformations.file.filename;
 			res.download(fullPath, extInfos.storeInformations.file.filename, function (err) {
 				if (err) {
@@ -18,9 +31,61 @@ fileTransferController.prototype.download = function(data, res, callback) {
 				} else {
 					logger.success();
 				}
+			});
+
+
+
+
+		});
+	});
+}
+
+fileTransferController.prototype.getOnlyNeededDependencies = function() {
+	// boucle sur les id et check si le user les a : reconstruit un array avec ceux qui y sont pas
+	// faire un zip de ces path aprés et le download
+
+}
+
+fileTransferController.prototype.getAllDependenciesPath = function (extInfos, callbackErr , callback) {
+	var extensionManager = require("../manager/extensionManager.js");
+	var async = require('async');
+	var paths = [];
+	var ref = extInfos;
+
+	var f = function (ext, callback_queue2) {
+		var path = ext.data.storeInformations.fileSystem.path;
+		var filename = ext.data.storeInformations.file.filename;
+		paths.push({
+			"id" : ext.data.id,
+			"path" : path + filename
+		});
+
+		if (ext.data.dependencies.length == 0) {
+	    	callback_queue2();
+	    	return
+		} else {
+			var queue = async.queue(function(ext, callback_queue) {
+				extensionManager.getByNV(ext.name, ext.version, function (err, result) {
+					if (err) {
+						queue.kill();
+						callbackErr(err);
+					} else {
+						f(result , callback_queue);
+					}
+				})
 			})
-		})
-	})
+	 		queue.drain = function() {
+		    	callback_queue2();
+		    	return
+		    }
+			for (var i = 0; i < ext.data.dependencies.length; i++) {
+				queue.push(ext.data.dependencies[i])
+			}
+		}
+	};
+	f(extInfos, function() {
+		callback(paths);
+	});	
 }
 
 fileTransferController.prototype.getFileInfosFromRequest = function (data, callbackErr, callback) {
@@ -211,6 +276,106 @@ fileTransferController.prototype.checkDependencies = function(dependencies, call
 		callback();
 	}
 	
+}
+
+fileTransferController.prototype.getInfos = function(data, callback) {
+	var extensionManager = require("../manager/extensionManager.js");
+	var me = this;
+
+	if (data && data["name"] && data["version"]) {
+		extensionManager.getByNV(data["name"], data["version"], function (err, ext) {
+			if (err) {
+				callback(err);
+			} else {
+				if (!data["keys"] || Object.keys(data["keys"]).length == 0) {l
+    				var result = me.getAllInfos(ext);
+    			} else {
+    				var result = me.switchDataGET(ext, data["keys"]);
+					if (result == null) {
+						err = "Invalid key for account";
+						logger.error(err);
+						callback(err, null);
+					}
+				}
+				callback(null, result);
+			}
+		});
+	} else {
+		var err = "Missing data (needed : name , version)";
+		logger.error(err);
+		callback(err, null);
+	}
+}
+
+fileTransferController.prototype.switchDataGET = function(ext, data) {
+    var result= {};
+    
+    for (var key in data) {
+		switch (key) {
+		case "informations_name":
+		    result[key] = ext.data.informations.name;
+		    break;
+		case "informations_description":
+		    result[key] = ext.data.informations.description;
+		    break;
+		case "informations_version":
+		    result[key] = ext.data.informations.version;
+		    break;
+		case "informations_creationDate":
+		    result[key] = ext.data.informations.date.creationDate;
+		    break;
+		case "informations_lastUpload":
+		    result[key] = ext.data.informations.date.lastUpload;
+		    break;
+		case "informations_owner":
+		    result[key] = ext.data.informations.owner;
+		    break;
+		case "informations_minClientVersion":
+		    result[key] = ext.data.informations.minClientVersion;
+		    break;
+		case "contact_email":
+		    result[key] = ext.data.contact.email;
+		    break;
+		case "contact_phoneNumber":
+		    result[key] = ext.data.contact.phoneNumber;
+		    break;
+		case "contact_location":
+		    result[key] = ext.data.contact.location;
+		    break;
+		case "dependencies":
+		    result[key] = ext.data.dependencies;
+		    break;
+		case "accessInformation_isPrivate":
+		    result[key] = ext.data.accessInformation.isPrivate;
+		    break;
+		case "accessInformation_allowedGroups":
+		    result[key] = ext.data.accessInformation.allowedGroups;
+		    break;
+		default :
+			return null;
+		}
+    }
+    return result;
+}
+
+fileTransferController.prototype.getAllInfos = function(ext) {
+	var result= {};
+   
+	result["informations_name"] = ext.data.informations.name;
+    result["informations_description"] = ext.data.informations.description;
+    result["informations_version"] = ext.data.informations.version;
+    result["informations_creationDate"] = ext.data.informations.date.creationDate;
+    result["informations_lastUpload"] = ext.data.informations.date.lastUpload;
+    result["informations_owner"] = ext.data.informations.owner;
+    result["informations_minClientVersion"] = ext.data.informations.minClientVersion;
+    result["contact_email"] = ext.data.contact.email;
+    result["contact_phoneNumber"] = ext.data.contact.phoneNumber;
+    result["contact_location"] = ext.data.contact.location;
+    result["dependencies"] = ext.data.dependencies;
+    result["accessInformation_isPrivate"] = ext.data.accessInformation.isPrivate;
+    result["accessInformation_allowedGroups"] = ext.data.accessInformation.allowedGroups;
+
+    return result;
 }
 
 module.exports = fileTransferController;

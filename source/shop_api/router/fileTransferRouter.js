@@ -11,6 +11,7 @@ function fileTransferRouter(app) {
     // Create route
     this.upload(app);
     this.download(app);
+    this.getInfos(app);
 }
 
 fileTransferRouter.prototype.upload = function(app) {
@@ -51,16 +52,46 @@ fileTransferRouter.prototype.download = function(app) {
 		res.send("download");
 	})
 	.post(function (req, res, next) {
-		me.fileTransferController.download(req.body, res, function(err) {
-			if (err) {
-				res.status(500);
-				res.send(err);
-			} else {
-				logger.success();
-		    	res.status(200);
-	    		res.send("Ok");
-			}
+		me.lock(req.headers, res, function(err , user_id) {
+			me.fileTransferController.download(req.body, res, user_id, function(err) {
+				if (err) {
+					res.status(500);
+					res.send(err);
+				} else {
+					logger.success();
+			    	res.status(200);
+		    		res.send("Ok");
+				}
+			});
 		});
+	})
+}
+
+fileTransferRouter.prototype.getInfos = function(app) {
+    var me = this;
+    
+    app.route("/ext/getInfos")
+	.all(function (req, res, next) {
+	    console.log("Route : ext/getInfos");
+	    next();
+	})
+	.get(function (req, res, next) {
+		res.send("ext/getInfos");
+	})
+	.post(function (req, res, next) {
+		console.log("ici1");
+		//me.lock(req.headers, res, function(err , user_id) {
+			me.fileTransferController.getInfos(req.body, function(err, result) {
+				if (err) {
+					res.status(500);
+					res.send(err);
+				} else {
+					logger.success();
+			    	res.status(200);
+		    		res.send(result);
+				}
+			});
+		//});
 	})
 }
 

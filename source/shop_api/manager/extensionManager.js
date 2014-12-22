@@ -73,14 +73,16 @@ extensionManager.getIdByNV = function(name, version, callback) {
 }
 
 extensionManager.getByNV = function(name, version, callback) {
-	var ext = require("../model/extension.js");
+	var Ext = require("../model/extension.js");
 
-	ext.findOne({'informations.name' : name, "informations.version" : version}, function (err, result) {
+	Ext.findOne({'informations.name' : name, "informations.version" : version}, function (err, result) {
 		if (err) {
 			callback(err, null);
 		} else {
 			if (result != null) {
-				callback(null, result);
+				var ext = new Ext();
+				ext.setData(result);
+				callback(null, ext);
 			} else {
 				var err = "Can't find any extension with this name and version";
 				logger.error(err);
