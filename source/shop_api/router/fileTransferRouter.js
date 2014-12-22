@@ -80,7 +80,7 @@ fileTransferRouter.prototype.getInfos = function(app) {
 	})
 	.post(function (req, res, next) {
 		console.log("ici1");
-		//me.lock(req.headers, res, function(err , user_id) {
+		me.lock(req.headers, res, function(err , user_id) {
 			me.fileTransferController.getInfos(req.body, function(err, result) {
 				if (err) {
 					res.status(500);
@@ -91,7 +91,7 @@ fileTransferRouter.prototype.getInfos = function(app) {
 		    		res.send(result);
 				}
 			});
-		//});
+		});
 	})
 }
 
