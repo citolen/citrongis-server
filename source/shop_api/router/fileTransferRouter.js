@@ -79,7 +79,6 @@ fileTransferRouter.prototype.getInfos = function(app) {
 		res.send("ext/getInfos");
 	})
 	.post(function (req, res, next) {
-		console.log("ici1");
 		me.lock(req.headers, res, function(err , user_id) {
 			me.fileTransferController.getInfos(req.body, function(err, result) {
 				if (err) {

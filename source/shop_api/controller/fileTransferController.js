@@ -292,9 +292,10 @@ fileTransferController.prototype.getInfos = function(data, callback) {
     			} else {
     				var result = me.switchDataGET(ext, data["keys"]);
 					if (result == null) {
-						err = "Invalid key for account";
+						var err = "Invalid key for account";
 						logger.error(err);
 						callback(err, null);
+						return;
 					}
 				}
 				callback(null, result);
