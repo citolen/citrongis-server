@@ -8,7 +8,7 @@ function userController() {
 userController.prototype.getUser = function(data, callback) {
 	var me = this;
 
-	if(data || data["search"]) {
+	if(data && data["search"]) {
 		if (Object.keys(data["search"]).length > 0) {
 			var filters = me.getSearchObject(data["search"]);
 			if (filters != null) {
