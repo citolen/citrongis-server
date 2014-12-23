@@ -265,7 +265,6 @@ function main()
 		getUsers(s0, token1, function(value) {
 			var s1 = []
 			console.log("Get user with REGEXP (No result)");
-			console.log(value);
 			assert(JSON.stringify(value.data), JSON.stringify(s1), true);
 			callback(null, "");
 		});
