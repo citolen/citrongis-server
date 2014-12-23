@@ -13,7 +13,7 @@ accountController.prototype.setAccount = function(user_id, new_data, callback) {
     	} else {
 			user = me.switchDataSET(user, new_data);
 			if (user == null) {
-				err = "Invalid key for account";
+				var err = "Invalid key for account";
 				logger.error(err);
 				callback(err);
 			} else {
@@ -37,7 +37,7 @@ accountController.prototype.getAccount = function(user_id, data, callback) {
     		} else {
 	    		var result = me.switchDataGET(user, data);
 	    		if (result == null) {
-	    			err = "Invalid key for account";
+	    			var err = "Invalid key for account";
 					logger.error(err);
 				}
 			}

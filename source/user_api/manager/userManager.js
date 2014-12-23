@@ -63,5 +63,22 @@ userManager.checkExistingUserName = function(username, callback) {
     });
 }
 
+userManager.findAll = function(filters, callback) {
+    userModel = require("../model/user.js");
+
+    userModel.find(filters, function(err , results) {
+        if (err) {
+            callback(err, null);
+        } else {
+            var users_list = [];
+            for (var key in results) {
+                var user = new userModel();
+                user.setData(results[key])
+                users_list.push(user);
+            }
+            callback(null, users_list);
+        }
+     })
+}
 
 module.exports = userManager;

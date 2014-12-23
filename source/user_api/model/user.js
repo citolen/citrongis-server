@@ -60,6 +60,17 @@ User.findOne = function(arg, callback) {
     })
 };
 
+User.find = function(arg, callback) {
+    DB_User.all({where : arg}, function(err ,result) {
+	if (err) {
+	    logger.error(err);
+			callback(err, null);
+	} else {
+	    callback(err, result);
+	}
+    })
+};
+
 User.have = function(arg, callback) {
     DB_User.all({where : arg}, function(err ,result) {
 	if (err) {

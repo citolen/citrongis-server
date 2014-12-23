@@ -25,18 +25,18 @@ userRouter.prototype.getUser = function(app) {
 	    answerGet(res);
 	})
 	.post(function (req, res, next) {
-		//me.lock(app, req, res, function () {
-			me.userController.getUser(req.body, function (err) {
+		me.lock(app, req, res, function () {
+			me.userController.getUser(req.body, function (err, data) {
 				if (err) {
 					res.status(500);
 					res.send(err);
 			    } else {
 				    logger.success();
 					res.status(200);
-					res.send("Ok");
+					res.send(data);
 			    }
 			});
-		//});
+		});
 	})
 }
 
