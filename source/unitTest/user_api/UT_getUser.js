@@ -230,7 +230,7 @@ function main()
 			callback(null, "")
 		});
 	},
-	function (callback) { //Get all user ended with 2
+	function (callback) { //Get all user started with 2
 		var s0 = {
 			"search": {"userInfo_firstName": "^2"},
 			"keys": {"userInfo_firstName": ""}
