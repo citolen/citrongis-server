@@ -97,66 +97,77 @@ function main()
 
     async.series([
 	createTestAccount,
-	function (callback) {
+	function (callback) {//Login User1
 	    login("user1@epitech.eu", "password1", "testclientid", "testclientsecret", function(value) {
-		assert(value.status, 200, true);
-		token1 = value.token;
-		callback(null, "");
+	    	console.log("Login User1");
+			assert(value.status, 200, true);
+			token1 = value.token;
+			callback(null, "");
 	    });
 	},
-	function (callback) {
+	function (callback) {//Login User2
 	    login("user2@epitech.eu", "password2", "testclientid", "testclientsecret", function(value) {
-		assert(value.status, 200, true);
-		token2 = value.token;
-		callback(null, "");
+	    	console.log("Login User2");
+			assert(value.status, 200, true);
+			token2 = value.token;
+			callback(null, "");
 	    });
 	},
-	function (callback) {
+	function (callback) {//Get Profile with invalid token
 	    getProfile({"authInfo_email": ""}, token1 + "1", function (value) {
-		assert(value.status, 401, true);
-		callback(null, "")
+	    	console.log("Get profile with invalid token");
+			assert(value.status, 401, true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Set Profile with invalid token
 	    setProfile({"userInfo_firstName": ""}, token1 + "1", function (value) {
-		assert(value, 401, true);
-		callback(null, "")
+	    	console.log("Set Profile with invalid token");
+			assert(value, 401, true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Get Profile
 	    getProfile({"authInfo_email": ""}, token2, function (value) {
-		var s = { "authInfo_email" : "user2@epitech.eu" };
-		assert(JSON.stringify(value.data), JSON.stringify(s), true);
-		callback(null, "")
+			var s = { "authInfo_email" : "user2@epitech.eu" };
+			
+			console.log("Get profile");
+			assert(JSON.stringify(value.data), JSON.stringify(s), true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Set Profile
 	    setProfile({"userInfo_firstName": "UserName2"}, token2 , function (value) {
-		assert(value, 200, true);
-		callback(null, "")
+	    	console.log("Set Profile");
+			assert(value, 200, true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Get profile with sevral keys
 	    getProfile({"authInfo_email": "", "userInfo_lastName": ""}, token1, function (value) {
-		var s = { "authInfo_email" : "user1@epitech.eu",
-			  "userInfo_lastName" : null};
-		assert(JSON.stringify(value.data), JSON.stringify(s), true);
-		callback(null, "")
+			var s = { "authInfo_email" : "user1@epitech.eu",
+				  "userInfo_lastName" : null};
+
+			console.log("Get profile with several keys");
+			assert(JSON.stringify(value.data), JSON.stringify(s), true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Set profile with several keys
 	    setProfile({"userInfo_firstName": "UserName1", "userInfo_lastName": "lastnameUser1"}, token1 , function (value) {
-		assert(value, 200, true);
-		callback(null, "")
+	    	console.log("Set profile with several keys");
+			assert(value, 200, true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Set profile with bad keys
 	    setProfile({"userInfo_wrongKey": "UserName1", "userInfo_lastName": "lastnameUser1"}, token1 , function (value) {
-		assert(value, 500, true);
-		callback(null, "")
+			console.log("Set profile with bad keys");
+			assert(value, 500, true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Set all profile
 	    var s = {"userInfo_firstName": "UserName2", 
 		     "userInfo_lastName": "lastnameUser2",
 		     "userInfo_dateOfBirth" : "01/08/1980",
@@ -172,11 +183,12 @@ function main()
 		     "accountInfo_creationDate" : "05/06/1985"
 		    };
 	    setProfile(s, token2 , function (value) {
-		assert(value, 200, true);
-		callback(null, "")
+			console.log("Set all Profile");
+			assert(value, 200, true);
+			callback(null, "")
 	    });
 	},
-	function (callback) {
+	function (callback) {//Get all profile
 	    var s0 = {"userInfo_firstName": "", 
 		      "userInfo_lastName": "",
 		      "userInfo_dateOfBirth" : "",
@@ -193,22 +205,24 @@ function main()
 		     };
 	    
 	    getProfile(s0, token2, function (value) {
-		var s = {"userInfo_firstName": "UserName2", 
-			 "userInfo_lastName": "lastnameUser2",
-			 "userInfo_dateOfBirth" : "01/08/1980",
-			 "userInfo_language" : "fr",
-			 "userInfo_profileType" : "user",
-			 "userInfo_picture" : "/img/profile-05246",
-			 "userInfo_contact_email" : "user2@epitech.eu",
-			 "userInfo_contact_phoneNumber" : "0685959565",
-			 "userInfo_contact_location" : "Paris",
-			 "userInfo_job_status" : "Team Member",
-			 "userInfo_job_company_name" : "MyCompany",
-			 "userInfo_job_company_location" : "Paris",
-			 "accountInfo_creationDate" : "05/06/1985"
-			};
-		assert(JSON.stringify(value.data), JSON.stringify(s), true);
-		callback(null, "")
+			var s = {"userInfo_firstName": "UserName2", 
+				 "userInfo_lastName": "lastnameUser2",
+				 "userInfo_dateOfBirth" : "01/08/1980",
+				 "userInfo_language" : "fr",
+				 "userInfo_profileType" : "user",
+				 "userInfo_picture" : "/img/profile-05246",
+				 "userInfo_contact_email" : "user2@epitech.eu",
+				 "userInfo_contact_phoneNumber" : "0685959565",
+				 "userInfo_contact_location" : "Paris",
+				 "userInfo_job_status" : "Team Member",
+				 "userInfo_job_company_name" : "MyCompany",
+				 "userInfo_job_company_location" : "Paris",
+				 "accountInfo_creationDate" : "05/06/1985"
+				};
+
+			console.log("Get all profile");
+			assert(JSON.stringify(value.data), JSON.stringify(s), true);
+			callback(null, "")
 	    });
 	}
     ]);

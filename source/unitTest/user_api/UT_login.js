@@ -52,34 +52,39 @@ function main()
 {
     async.series([
 	createTestAccount,
-	function (callback) {
+	function (callback) { //Login user1
 	    login("user@epitech.eu", "user_password", "testclientid", "testclientsecret", function(value) {
-		assert(value.status, 200, true);
-		callback(null, "");
+	    	console.log("Login user1");
+			assert(value.status, 200, true);
+			callback(null, "");
 	    });
 	},
-	function (callback) {
+	function (callback) { //Bad login
 	    login("wrongEmail@epitech.eu", "user_password", "testclientid", "testclientsecret", function(value) {
-		assert(value.status, 500, true);
-		callback(null, "");
+	    	console.log("Login with bad eamail")
+			assert(value.status, 500, true);
+			callback(null, "");
 	    });
 	},
-	function (callback) {
+	function (callback) { //Bad password
 	    login("user@epitech.eu", "WrongPassword", "testclientid", "testclientsecret", function(value) {
-		assert(value.status, 500, true);
-		callback(null, "");
+	    	console.log("Login with bad password");
+			assert(value.status, 500, true);
+			callback(null, "");
 	    });
 	},
-	function (callback) {
+	function (callback) { //Bad client_id
 	    login("user@epitech.eu", "user_password", "Wrongclientid", "testclientsecret", function(value) {
-		assert(value.status, 500, true);
-		callback(null, "");
+	    	console.log("Login with bad client_id");	    	
+			assert(value.status, 500, true);
+			callback(null, "");
 	    });
 	},
-	function (callback) {
+	function (callback) { //Bad client_secret
 	    login("user@epitech.eu", "user_password", "testclientid", "WrongClientsecret", function(value) {
-		assert(value.status, 500, true);
-		callback(null, "");
+	    	console.log("Login with bad client_secret");
+			assert(value.status, 500, true);
+			callback(null, "");
 	    });
 	}
     ]);

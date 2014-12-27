@@ -24,26 +24,30 @@ function main()
     async.series([
 	function (callback) {
 	    subscribe("user@epitech.eu", "user_password", function (value) {
-		assert(value, "Ok", true);
-		callback(null, "");
+	    	console.log("Subscribe User 1");
+			assert(value, "Ok", true);
+			callback(null, "");
 	    });
 	},
 	function (callback) {
 	    subscribe("user@epitech.eu", "user_password", function (value) {
-		assert(value, "Ok", false);
-		callback(null, "");
+	    	console.log("Subscribe User 1 (user already exist)");
+			assert(value, "Ok", false);
+			callback(null, "");
 	    });
 	},
 	function (callback) {
 	    subscribe("otherUser@epitech.eu", "pass", function (value) {
-		assert(value, "Ok", false);
-		callback(null, "");
+	       	console.log("Subscribe User 2 (invalid password)");
+	    	assert(value, "Ok", false);
+			callback(null, "");
 	    });
 	},
 	function (callback) {
 	    subscribe("randomUser@epitech.eu", "user_password", function (value) {
-		assert(value, "Ok", true);
-		callback(null, "");
+	    	console.log("Subscribe User 3");
+			assert(value, "Ok", true);
+			callback(null, "");
 	    });
 	}
     ]);
