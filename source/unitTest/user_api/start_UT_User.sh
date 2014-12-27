@@ -20,3 +20,5 @@ nodejs user_api/UT_profile.js
 
 echo "   - Clear Database ..."
 ./db_cleaner.sh "localhost:27017" > /dev/null
+echo "   - Launch user_api/UT_getUser.js"
+nodejs user_api/UT_getUser.js
