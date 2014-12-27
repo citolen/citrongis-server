@@ -46,14 +46,14 @@ function createTestAccount(mainCallback) {
     async.series([
 	function (callback) {
 	    subscribe("user1@epitech.eu", "password1", function (value) {
-		assert(value, "Ok", true);
-		callback(null, "");
+			assert(value, "Ok", true);
+			callback(null, "");
 	    });
 	},
 	function (callback) {
 	    subscribe("user2@epitech.eu", "password2", function (value) {
-		assert(value, "Ok", true);
-		callback(null, "");
+			assert(value, "Ok", true);
+			callback(null, "");
 	    });
 	}
     ], function (err, result) {
@@ -100,28 +100,32 @@ function main()
 	},
 	function (callback) { //Login user1
 	    login("user1@epitech.eu", "password1", "testclientid", "testclientsecret", function(value) {
-		assert(value.status, 200, true);
-		token1 = value.token;
-		callback(null, "");
+    		console.log("Login User1");
+			assert(value.status, 200, true);
+			token1 = value.token;
+			callback(null, "");
 	    });
 	},
 	function (callback) { //Login user2
 	    login("user2@epitech.eu", "password2", "testclientid", "testclientsecret", function(value) {
-		assert(value.status, 200, true);
-		token2 = value.token;
-		callback(null, "");
+    		console.log("Login User2");
+			assert(value.status, 200, true);
+			token2 = value.token;
+			callback(null, "");
 	    });
 	},
 	function (callback) { //testAuth with good token
 	    getId(token1, function (value) {
-		assert(value.data, id1, true);
-		callback(null, "");
+    		console.log("Test auth with good token");
+			assert(value.data, id1, true);
+			callback(null, "");
 	    });
 	},
 	function (callback) { //testAuth with bad token
 	    getId(token2 + 1, function (value) {
-		assert(value.status, 401, true);
-		callback(null, "");
+    		console.log("Test auth with bad token");
+			assert(value.status, 401, true);
+			callback(null, "");
 	    });
 	}
     ]);
