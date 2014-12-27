@@ -146,7 +146,23 @@ extensionManager.haveThisByNV = function(name, version, callback) {
 	});
 }
 
+extensionManager.findAll = function(filters, callback) {
+    extModel = require("../model/extension.js");
 
+    extModel.find(filters, function(err , results) {
+        if (err) {
+            callback(err, null);
+        } else {
+            var ext_list = [];
+            for (var key in results) {
+                var ext = new extModel();
+                ext.setData(results[key])
+                ext_list.push(ext);
+            }
+            callback(null, ext_list);
+        }
+     })
+}
 
 
 module.exports = extensionManager;

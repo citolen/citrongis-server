@@ -379,4 +379,101 @@ fileTransferController.prototype.getAllInfos = function(ext) {
     return result;
 }
 
+fileTransferController.prototype.getExt = function(data, callback) {
+	var extensionManager = require("../manager/extensionManager.js");
+	var me = this;
+
+	if(data && data["search"]) {
+		if (Object.keys(data["search"]).length > 0) {
+			var filters = me.getSearchObject(data["search"]);
+			if (filters != null) {
+				extensionManager.findAll(filters, function(err, ext_list) {
+					if (err) {
+						callback(err);
+					} else {
+						var dataToSend = [];
+						for(var index in ext_list) {
+							if (!data["keys"] || Object.keys(data["keys"]).length == 0) {
+				    			var result = me.getAllInfos(ext_list[index]);
+				    		} else {
+					    		var result = me.switchDataGET(ext_list[index], data["keys"]);
+					    		if (result == null) {
+					    			var err = "Invalid key for extension";
+									logger.error(err);
+									callback(err, null);
+								}
+							}
+							dataToSend.push(result);
+						}
+						callback(err, dataToSend);
+					}
+				});
+			} else {
+				var err = "Invalid key for extension";
+				logger.error(err);
+				callback(err);
+			}
+		} else {
+			var err = "Missing data (search filters is empty)";
+			logger.error(err);
+			callback(err);
+		}
+	} else {
+		var err = "Missing data (needed : search)";
+		logger.error(err);
+		callback(err);
+	}
+}
+
+fileTransferController.prototype.getSearchObject = function(data) {
+	var result= {};
+    
+    for (var key in data) {
+		switch (key) {
+		case "informations_name":
+		    result["informations.name"] = new RegExp(data[key]);
+		    break;
+		case "informations_description":
+		    result["informations.description"] = new RegExp(data[key]);
+		    break;
+		case "informations_version":
+		    result["informations.version"] = new RegExp(data[key]);
+		    break;
+		case "informations_creationDate":
+		    result["informations.date.creationDate"] = new RegExp(data[key]);
+		    break;
+		case "informations_lastUpload":
+		    result["informations.date.lastUpload"] = new RegExp(data[key]);
+		    break;
+		case "informations_owner":
+		    result["informations.owner"] = new RegExp(data[key]);
+		    break; 
+		case "informations_minClientVersion":
+		    result["informations.minClientVersion"] = new RegExp(data[key]);
+		    break; 
+		case "contact_email":
+		    result["contact.email"] = new RegExp(data[key]);
+		    break; 
+		case "contact_phoneNumber":
+		    result["contact.phoneNumber"] = new RegExp(data[key]);
+		    break; 
+		case "contact_location":
+		    result["contact.location"] = new RegExp(data[key]);
+		    break; 
+		case "dependencies":
+		    result["dependencies"] = new RegExp(data[key]);
+		    break; 
+		case "accessInformation_isPrivate":
+		    result["accessInformation.isPrivate"] = new RegExp(data[key]);
+		    break; 
+		case "accessInformation_allowedGroups":
+		    result["accessInformation.allowedGroups"] = new RegExp(data[key]);
+		    break; 
+		default :
+			return null;
+		}
+    }
+    return result;
+}
+
 module.exports = fileTransferController;

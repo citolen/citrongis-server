@@ -12,6 +12,7 @@ function fileTransferRouter(app) {
     this.upload(app);
     this.download(app);
     this.getInfos(app);
+    this.getExtension(app);
 }
 
 fileTransferRouter.prototype.upload = function(app) {
@@ -89,6 +90,33 @@ fileTransferRouter.prototype.getInfos = function(app) {
 			    	res.status(200);
 		    		res.send(result);
 				}
+			});
+		});
+	})
+}
+
+fileTransferRouter.prototype.getExtension = function(app) {
+	var me = this;
+
+    app.route("/ext/getExt")
+	.all(function (req, res, next) {
+	    console.log("Route : ext/getExtension");    
+	    next();
+	})
+	.get(function (req, res, next) {
+	    res.send("ext/getExtension");
+	})
+	.post(function (req, res, next) {
+		me.lock(req.headers, res, function(err , user_id) {
+			me.fileTransferController.getExt(req.body, function (err, data) {
+				if (err) {
+					res.status(500);
+					res.send(err);
+			    } else {
+				    logger.success();
+					res.status(200);
+					res.send(data);
+			    }
 			});
 		});
 	})
