@@ -1,19 +1,37 @@
 var colors = require("colors");
 var counter = 0;
 
-//test 1
 
 function assert(value, attempt, bool) {
     if (value) {
-	if (((value == attempt) == bool)) 
-	    console.log(counter + " => " + "Ok".green);
-	else
-	    console.log(counter + " => " + "Ko ( ".red + value.red + " )".red);
-	counter++;
+		try {
+			var obj = JSON.parse(value);
+			var test = JSON.parse(attempt);
+			
+			if (Object.keys(obj).length == Object.keys(test).length) {
+				for (var key in obj) {
+					if (!(test.hasOwnProperty(key))) {
+					    console.log(counter + " => " + "Ko ( ".red + value.red + " )".red);
+				    	return (counter++);
+				  	}
+				}
+			    console.log(counter + " => " + "Ok".green);
+			}
+			else 
+			    console.log(counter + " => " + "Ko ( ".red + value.red + " )".red);
+		}
+		catch (e) {
+			if (((value == attempt) == bool)) 
+			    console.log(counter + " => " + "Ok".green);
+			else
+			    console.log(counter + " => " + "Ko ( ".red + value.red + " )".red);
+		}
+		counter++;
     }
     else
 	console.log(counter + " => " + "Ko ( null value )".red);
-	
 }
 
 module.exports = assert;
+
+//assert(JSON.stringify({'romain': 0, 'toto': 1}), JSON.stringify({'toto': 1, 'romain': 0}), true)
