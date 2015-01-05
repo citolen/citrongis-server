@@ -1,7 +1,7 @@
 var colors = require("colors");
 var counter = 0;
 
-//test
+//test 1
 
 function assert(value, attempt, bool) {
     if (value) {
