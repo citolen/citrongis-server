@@ -26,7 +26,7 @@ authController.prototype.getOAuthOption = function() {
 
 authController.prototype.login = function(req, res, next, callback) {
     var func = this.oauthOption.grant();
-
+    console.log(req.body);
     if (req.body) {
         var data = {
             "grant_type" : "password",

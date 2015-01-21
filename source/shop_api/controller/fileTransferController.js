@@ -11,19 +11,6 @@ fileTransferController.prototype.download = function(data, res, user_id, callbac
 
 	me.getFileInfosFromRequest(data, callback, function (name, version) {
 		me.IfExtExists(name, version, callback, function(extInfos) {
-			
-			/*
-			me.getAllDependenciesPath(extInfos, callback, function(paths) {
-				me.getOnlyNeededDependencies(paths, callback, function(paths) {
-
-				})
-			})
-*/
-
-
-
-
-
 			var fullPath = extInfos.storeInformations.fileSystem.path + extInfos.storeInformations.file.filename;
 			res.download(fullPath, extInfos.storeInformations.file.filename, function (err) {
 				if (err) {
@@ -32,60 +19,8 @@ fileTransferController.prototype.download = function(data, res, user_id, callbac
 					logger.success();
 				}
 			});
-
-
-
-
 		});
 	});
-}
-
-fileTransferController.prototype.getOnlyNeededDependencies = function() {
-	// boucle sur les id et check si le user les a : reconstruit un array avec ceux qui y sont pas
-	// faire un zip de ces path aprés et le download
-
-}
-
-fileTransferController.prototype.getAllDependenciesPath = function (extInfos, callbackErr , callback) {
-	var extensionManager = require("../manager/extensionManager.js");
-	var async = require('async');
-	var paths = [];
-	var ref = extInfos;
-
-	var f = function (ext, callback_queue2) {
-		var path = ext.data.storeInformations.fileSystem.path;
-		var filename = ext.data.storeInformations.file.filename;
-		paths.push({
-			"id" : ext.data.id,
-			"path" : path + filename
-		});
-
-		if (ext.data.dependencies.length == 0) {
-	    	callback_queue2();
-	    	return
-		} else {
-			var queue = async.queue(function(ext, callback_queue) {
-				extensionManager.getByNV(ext.name, ext.version, function (err, result) {
-					if (err) {
-						queue.kill();
-						callbackErr(err);
-					} else {
-						f(result , callback_queue);
-					}
-				})
-			})
-	 		queue.drain = function() {
-		    	callback_queue2();
-		    	return
-		    }
-			for (var i = 0; i < ext.data.dependencies.length; i++) {
-				queue.push(ext.data.dependencies[i])
-			}
-		}
-	};
-	f(extInfos, function() {
-		callback(paths);
-	});	
 }
 
 fileTransferController.prototype.getFileInfosFromRequest = function (data, callbackErr, callback) {
