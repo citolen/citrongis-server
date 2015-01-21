@@ -11,8 +11,8 @@ fileTransferController.prototype.download = function(data, res, user_id, callbac
 
 	me.getFileInfosFromRequest(data, callback, function (name, version) {
 		me.IfExtExists(name, version, callback, function(extInfos) {
-			var fullPath = extInfos.storeInformations.fileSystem.path + extInfos.storeInformations.file.filename;
-			res.download(fullPath, extInfos.storeInformations.file.filename, function (err) {
+			var fullPath = extInfos.data.storeInformations.fileSystem.path + extInfos.data.storeInformations.file.filename;
+			res.download(fullPath, extInfos.data.storeInformations.file.filename, function (err) {
 				if (err) {
 					logger.error(err);
 				} else {
@@ -39,7 +39,7 @@ fileTransferController.prototype.IfExtExists = function (name, version, callback
 	var me = this;
 
 	me.IfExtExistsInDB(name, version, callbackErr, function (extInfos) {
-		var fullPath = extInfos.storeInformations.fileSystem.path + extInfos.storeInformations.file.filename;
+		var fullPath = extInfos.data.storeInformations.fileSystem.path + extInfos.data.storeInformations.file.filename;
 		me.IfExtExistsInFS(fullPath, callbackErr, function () {
 			callback(extInfos);
 		})

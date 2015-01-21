@@ -18,7 +18,8 @@ function lock(headers, res, callback) {
 	} else {
 		var err = "Missing authorization information";
         logger.error(err);
-        callback(err, null);
+        res.status(401);
+        res.send(err);
 	}
 	
 }
