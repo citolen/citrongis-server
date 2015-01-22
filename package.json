@@ -20,6 +20,7 @@
 	"multiparty" : "latest",
 	"unzip" : "latest",
 	"mkdirp" : "latest",
-	"moment" : "latest" 
+	"moment" : "latest",
+	"is-zip" : "latest"
     }
 }
