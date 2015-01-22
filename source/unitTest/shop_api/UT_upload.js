@@ -75,6 +75,21 @@ function upload(path, token, callback) {
 	form.append('file', fs.createReadStream(path));
 }
 
+function uploadWithoutBearer(path, callback) {
+	var post_form = {
+		url : shop_api_addr + "/upload",
+		headers : {}
+	}
+	var r = request.post(post_form, function (err, res, body) {
+	try {
+		body = JSON.parse(body);
+	} catch (e) {}
+		callback(res.statusCode);
+	});
+	var form = r.form();
+	form.append('file', fs.createReadStream(path));
+}
+
 function main()
 {
 	var token1;
@@ -102,6 +117,13 @@ function main()
 			upload("./shop_api/ressources/citrongis-app.zip", token1, function(value) {
 			console.log("User 1 : Upload citrongis-app-v1 without dependencies");
 			assert(value, 500, true);
+			callback(null, "");
+			});
+		},
+		function (callback) { //upload testapli1-v1 with user 1 (good)
+			uploadWithoutBearer("./shop_api/ressources/testapli1.zip", function(value) {
+			console.log("User 1 : Upload testapli1-v1 without Bearer");
+			assert(value, 401, true);
 			callback(null, "");
 			});
 		},
