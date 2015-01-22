@@ -80,14 +80,25 @@ function getProfile(data, token, callback) {
 function setProfile(data, token, callback) {
     var post_form = {
 	url : user_api_addr + "/account/set",
-        headers : { Authorization: 'Bearer ' + token},
+        headers : {Authorization: 'Bearer ' + token},
 	form : data
     }
 
     request.post(post_form, function(err, res, body) {
 	callback(res.statusCode);
     });
+}
 
+function setProfileWithoutBearer(data, callback) {
+    var post_form = {
+	url : user_api_addr + "/account/set",
+        headers : {},
+	form : data
+    }
+
+    request.post(post_form, function(err, res, body) {
+	callback(res.statusCode);
+    });
 }
 
 function main() 
@@ -182,9 +193,30 @@ function main()
 		     "userInfo_job_company_location" : "Paris",
 		     "accountInfo_creationDate" : "05/06/1985"
 		    };
-	    setProfile(s, token2 , function (value) {
+	    setProfile(s, token2, function (value) {
 			console.log("Set all Profile");
 			assert(value, 200, true);
+			callback(null, "")
+	    });
+	},
+	function (callback) {//Set all profile without Bearer
+	    var s = {"userInfo_firstName": "UserName2", 
+		     "userInfo_lastName": "lastnameUser2",
+		     "userInfo_dateOfBirth" : "01/08/1980",
+		     "userInfo_language" : "fr",
+		     "userInfo_profileType" : "user",
+		     "userInfo_picture" : "/img/profile-05246",
+		     "userInfo_contact_email" : "user2@epitech.eu",
+		     "userInfo_contact_phoneNumber" : "0685959565",
+		     "userInfo_contact_location" : "Paris",
+		     "userInfo_job_status" : "Team Member",
+		     "userInfo_job_company_name" : "MyCompany",
+		     "userInfo_job_company_location" : "Paris",
+		     "accountInfo_creationDate" : "05/06/1985"
+		    };
+	    setProfileWithoutBearer(s, function (value) {
+			console.log("Set all Profile without Bearer");
+			assert(value, 401, true);
 			callback(null, "")
 	    });
 	},
@@ -203,7 +235,7 @@ function main()
 		      "userInfo_job_company_location" : "",
 		      "accountInfo_creationDate" : ""
 		     };
-	    
+
 	    getProfile(s0, token2, function (value) {
 			var s = {"userInfo_firstName": "UserName2", 
 				 "userInfo_lastName": "lastnameUser2",
