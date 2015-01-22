@@ -4,6 +4,8 @@ var request = require("request");
 var MongoClient = require('mongodb').MongoClient;
 var fs = require('fs');
 require("../config.js");
+var isZip = require('is-zip');
+var read = require('fs').readFileSync;
 
 function subscribe(email_str, password_str, callback) {
     var subscribe_form = {
@@ -64,8 +66,8 @@ function createTestAccount(mainCallback) {
 
 function upload(path, token, callback) {
     var post_form = {
-	url : shop_api_addr + "/upload",
-	headers : { Authorization: 'Bearer ' + token}
+		url : shop_api_addr + "/upload",
+		headers : { Authorization: 'Bearer ' + token}
     }
 
     var r = request.post(post_form, function (err, res, body) {
@@ -78,17 +80,22 @@ function upload(path, token, callback) {
     form.append('file', fs.createReadStream(path));
 }
 
-function download(myName, myVersion, callback) {
-    var download_form = {
-        name: myName,
-        version: myVersion
-    };
+function download(myName, myVersion, token, callback) {
 
-    request.post({url: shop_api_addr + '/download', form: {name: myName, version: myVersion}})
+	var downloadPath = '/tmp/' + myName + '-' + myVersion + '.zip'
+	var file = fs.createWriteStream(downloadPath);
+
+    request.post({url: shop_api_addr + '/download', headers: {Authorization: 'Bearer ' + token}, form: {name: myName, version: myVersion}})
     .on('error', function(err) {
     		console.log(err)
 	  	})
-  	.pipe(fs.createWriteStream('/tmp/testdownload.zip')) 
+  	.pipe(file);
+
+  	file.on('finish', function() {
+		assert(isZip(read(downloadPath)), true, true);
+  	})
+
+  	callback(downloadPath);
 }
 
 function main() 
@@ -140,6 +147,12 @@ function main()
 			console.log("User 1 : Upload main-app.zip");
 			assert(value, 200, true);
 			callback(null, "");
+	    });
+	},
+	function (callback) { //Download citrongis-first-app.zip  with user 1 (good)
+		download("citrongis-first-app", "0.0.1", token1, function(value) {
+			console.log("User 1 : Download citrongis-first-app.zip");
+		  	callback(null, "");
 	    });
 	}
     ]);
