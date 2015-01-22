@@ -80,7 +80,7 @@ function upload(path, token, callback) {
     form.append('file', fs.createReadStream(path));
 }
 
-function download(myName, myVersion, token, callback) {
+function download(myName, myVersion, token, assertResult, callback) {
 
 	var downloadPath = '/tmp/' + myName + '-' + myVersion + '.zip'
 	var file = fs.createWriteStream(downloadPath);
@@ -92,8 +92,10 @@ function download(myName, myVersion, token, callback) {
   	.pipe(file);
 
   	file.on('finish', function() {
-		assert(isZip(read(downloadPath)), true, true);
-  	})
+  		console.log(isZip(read(downloadPath)));
+  		console.log(assertResult);
+		assert(isZip(read(downloadPath)), assertResult, true);
+  	});
 
   	callback(downloadPath);
 }
@@ -149,8 +151,14 @@ function main()
 			callback(null, "");
 	    });
 	},
+		function (callback) { //Download invalid extension with user 1
+		download("invalid", "0.0.1", token1, false, function(value) {
+			console.log("User 1 : Download invalid extension");
+		  	callback(null, "");
+	    });
+	},
 	function (callback) { //Download citrongis-first-app.zip  with user 1 (good)
-		download("citrongis-first-app", "0.0.1", token1, function(value) {
+		download("citrongis-first-app", "0.0.1", token1, true, function(value) {
 			console.log("User 1 : Download citrongis-first-app.zip");
 		  	callback(null, "");
 	    });
