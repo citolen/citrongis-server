@@ -3,7 +3,7 @@ var counter = 0;
 
 
 function assert(value, attempt, bool) {
-    if (value) {
+    if (value != null) {
 		try {
 			var obj = JSON.parse(value);
 			var test = JSON.parse(attempt);
@@ -32,6 +32,7 @@ function assert(value, attempt, bool) {
 			    console.log(counter + " => " + "Ko ( ".red + value.red + " )".red);
 		}
 		catch (e) {
+			console.log("A")
 			if (((value == attempt) == bool)) 
 			    console.log(counter + " => " + "Ok".green);
 			else
