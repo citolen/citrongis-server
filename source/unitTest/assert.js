@@ -40,8 +40,10 @@ function assert(value, attempt, bool) {
 		}
 		counter++;
     }
-    else
+    else {
 		console.log(counter + " => " + "Ko ( null value )".red);
+		counter++;
+	}
 }
 
 module.exports = assert;
