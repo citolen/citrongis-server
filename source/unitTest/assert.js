@@ -32,7 +32,6 @@ function assert(value, attempt, bool) {
 			    console.log(counter + " => " + "Ko ( ".red + value.red + " )".red);
 		}
 		catch (e) {
-			console.log("A")
 			if (((value == attempt) == bool)) 
 			    console.log(counter + " => " + "Ok".green);
 			else
