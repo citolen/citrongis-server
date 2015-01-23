@@ -88,16 +88,14 @@ function download(myName, myVersion, token, assertResult, callback) {
     request.post({url: shop_api_addr + '/download', headers: {Authorization: 'Bearer ' + token}, form: {name: myName, version: myVersion}})
     .on('error', function(err) {
     		console.log(err)
-	  	})
+		callback(downloadPath);
+	})
   	.pipe(file);
 
   	file.on('finish', function() {
-  		console.log(isZip(read(downloadPath)));
-  		console.log(assertResult);
 		assert(isZip(read(downloadPath)), assertResult, true);
+		callback(downloadPath);
   	});
-
-  	callback(downloadPath);
 }
 
 function main() 
@@ -151,15 +149,15 @@ function main()
 			callback(null, "");
 	    });
 	},
-		function (callback) { //Download invalid extension with user 1
+	function (callback) { //Download invalid extension with user 1
+		console.log("User 1 : Download invalid extension");
 		download("invalid", "0.0.1", token1, false, function(value) {
-			console.log("User 1 : Download invalid extension");
 		  	callback(null, "");
 	    });
 	},
 	function (callback) { //Download citrongis-first-app.zip  with user 1 (good)
+		console.log("User 1 : Download citrongis-first-app.zip");
 		download("citrongis-first-app", "0.0.1", token1, true, function(value) {
-			console.log("User 1 : Download citrongis-first-app.zip");
 		  	callback(null, "");
 	    });
 	}
