@@ -131,7 +131,6 @@ fileTransferController.prototype.getFileFromRequest = function(req, callbackErr,
 			} else {
 				var err = "Only one file has to be given";
 				logger.error(err);
-				console.log("err2");
 				callbackErr(err);
 			}
 		}
