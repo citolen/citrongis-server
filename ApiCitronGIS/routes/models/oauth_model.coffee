@@ -8,8 +8,7 @@ module.exports.getClient = (clientId, clientSecret, callback) ->
     Client.findOne {
         client_id: clientId,
         client_secret: clientSecret
-    }, (err, client) ->
-        callback err, client
+    }, callback
 
 module.exports.grantTypeAllowed = (clientId, grantType, callback) ->
     callback false, true

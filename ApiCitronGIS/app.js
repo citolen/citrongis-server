@@ -29,9 +29,17 @@ app.oauth = oauthserver({
     debug: true
 });
 
+// Print body
+if (app.get('env') === 'development') {
+    app.use(function (req, res, next) {
+        console.log("BODY", req.body);
+        next();
+    });
+}
 
 // Begin public routes
 app.all('/auth/login', oauth_model.detectIP, app.oauth.grant());
+app.use('/auth', require('./routes/public_user'));
 // End public routes
 
 // Ask autorisation
@@ -58,7 +66,7 @@ app.use(function (req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        console.log(err);
+        console.log("Errors", err);
         res.send({
             message: err.message,
             error: err
