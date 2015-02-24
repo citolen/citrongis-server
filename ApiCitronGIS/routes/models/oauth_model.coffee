@@ -15,7 +15,7 @@ module.exports.grantTypeAllowed = (clientId, grantType, callback) ->
 
 module.exports.getUser = (username, password, callback) ->
     User.findOne where: { $or: [ { username: username }, { email: username } ] }, (err, user) ->
-        callback err if err or !user
+        return callback err if err or !user
         shasum = crypto.createHash 'sha1'
         shasum.update password
         d = shasum.digest 'hex'
@@ -26,7 +26,6 @@ module.exports.saveAccessToken = (accessToken, clientId, expires, user, callback
         accessToken: accessToken
         clientId: clientId
         userId: user.id
-        expires: expires
         ip: process.ip
     , callback
 

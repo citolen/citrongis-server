@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var oauthserver = require('node-oauth2-server');
+var debug = require('debug')('ApiCitronGIS');
 require('coffee-script/register');
 
 var app = express();
@@ -17,7 +18,7 @@ app.set('view engine', 'jade');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -32,7 +33,7 @@ app.oauth = oauthserver({
 // Print body
 if (app.get('env') === 'development') {
     app.use(function (req, res, next) {
-        console.log("BODY", req.body);
+        debug(req.body);
         next();
     });
 }
@@ -47,7 +48,7 @@ app.use(app.oauth.authorise());
 app.use(require('./routes/users').completMyInformation);
 
 // Begin private routes
-app.use('/users', require('./routes/users'));
+app.use('/account', require('./routes/users'));
 app.use('/', require('./routes/index'));
 // End private routes
 

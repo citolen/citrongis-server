@@ -14,6 +14,6 @@ module.exports.parseModelForCreate = (data, model, callback) ->
         
 module.exports.parseModelForUpdate = (data, model, callback) ->
     values = {}
-    model = model.attributes
-    (if item.update is true and data[item.name]? then values[item.name] = data[item.name]) for item in model
+    for item in model.attributes
+        values[item.name] = data[item.name] if item.update is true and data[item.name]?
     callback values

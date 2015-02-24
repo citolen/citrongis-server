@@ -16,7 +16,7 @@ User = Schema.define 'User',
         creationDate: { type: Date, default: () -> return new Date }
 
 User.attributes = [
-        { name: 'username', create: false, update: false }
+        { name: 'username', create: false, update: true }
         { name: 'email', create: true, update: false }
         { name: 'password', create: true, update: true }
         { name: 'firstname', create: false, update: true }
@@ -37,7 +37,6 @@ User.prototype.testValid = (callback) ->
     that = @
     @.isValid (valid) ->
         if not valid
-            console.log that.errors
             [ message, code ] = [null, null]
             if that.errors.email?
                 message = that.errors.email
@@ -48,4 +47,5 @@ User.prototype.testValid = (callback) ->
             callback false, message, code
         else
             callback true
+
 module.exports = User
