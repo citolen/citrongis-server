@@ -11,8 +11,8 @@ require('coffee-script/register');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -20,8 +20,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(require('stylus').middleware(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(require('stylus').middleware(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 var oauth_model = require('./routes/models/oauth_model');
 app.oauth = oauthserver({
@@ -46,6 +46,12 @@ app.use('/auth', require('./routes/public_user'));
 // Ask autorisation
 app.use(app.oauth.authorise());
 app.use(require('./routes/account').completMyInformation);
+
+// Download
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Upload -> Uniquement route upload
+//app.use(multer({ dest: './public/uploads/' }));
 
 // Begin private routes
 app.use('/account', require('./routes/account'));

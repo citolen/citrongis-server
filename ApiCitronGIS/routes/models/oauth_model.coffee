@@ -30,7 +30,8 @@ module.exports.saveAccessToken = (accessToken, clientId, expires, user, callback
     , callback
 
 module.exports.getAccessToken = (bearerToken, callback) ->
-    AuthAccessToken.findOne {accessToken: bearerToken}, callback
+    AuthAccessToken.findOne {accessToken: bearerToken}, (err, token) ->
+        callback err, token
 
 module.exports.detectIP = (req, res, next) ->
     process.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress

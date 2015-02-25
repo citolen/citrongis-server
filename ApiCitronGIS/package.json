@@ -23,7 +23,9 @@
     "jugglingdb": "~0.3.0",
     "jugglingdb-mongodb": "0.0.4-4",
     "coffee-script": "~1.9.1",
-    "crypto": "0.0.3"
+    "crypto": "0.0.3",
+    "multer": "~0.1.8",
+    "easyimage": "~1.2.2"
   },
   "config": {
     "database": {

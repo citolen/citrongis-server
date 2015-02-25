@@ -1,9 +1,11 @@
 ﻿express = require 'express'
 crypto = require 'crypto'
+fs = require 'fs'
 
 User = require './db_models/user'
 Response = require './models/response'
 Model_tools = require './models/model_tools'
+Avatar_upload = require './models/avatar_upload'
 
 router = express.Router()
 
@@ -12,13 +14,15 @@ router.completMyInformation = (req, res, next) ->
         req.user = user
         next()
 
-router.post '/set', (req, res) ->
+router.post '/set', Avatar_upload.image, (req, res) ->
     Model_tools.parseModelForUpdate req.body, User, (values) ->
         if values.password?
             shasum = crypto.createHash 'sha1'
             shasum.update values.password
             values.password = shasum.digest 'hex'
         req.user[key] = val for key, val of values
+        fs.unlink 'public/images/' + req.user.picture, (err) ->
+        req.user.picture = req.files.picture.name if req.files.picture?
         user = new User req.user
         user.save (err) ->
            throw err if err
@@ -38,8 +42,5 @@ router.get '/get', (req, res) ->
         picture: req.user.picture
         job: req.user.job
     , res
-
-router.get '/get', (req, res) ->
-
 
 module.exports = router

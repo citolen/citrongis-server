@@ -37,6 +37,7 @@
     <Content Include="routes\db_models\oauth_client.coffee" />
     <Content Include="routes\db_models\schema.coffee" />
     <Content Include="routes\db_models\user.coffee" />
+    <Content Include="routes\models\avatar_upload.coffee" />
     <Content Include="routes\models\model_tools.coffee" />
     <Content Include="routes\models\oauth_model.coffee" />
     <Content Include="package.json" />
@@ -51,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="public\extensions\" />
     <Folder Include="routes\models\" />
     <Folder Include="routes\db_models\" />
     <Folder Include="public\" />
