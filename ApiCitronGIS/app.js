@@ -45,13 +45,12 @@ app.use('/auth', require('./routes/public_user'));
 
 // Ask autorisation
 app.use(app.oauth.authorise());
-app.use(require('./routes/users').completMyInformation);
+app.use(require('./routes/account').completMyInformation);
 
 // Begin private routes
-app.use('/account', require('./routes/users'));
-app.use('/', require('./routes/index'));
+app.use('/account', require('./routes/account'));
+app.use('/users', require('./routes/users'));
 // End private routes
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

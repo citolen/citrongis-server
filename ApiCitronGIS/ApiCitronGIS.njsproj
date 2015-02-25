@@ -31,8 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="routes\index.js" />
-    <Compile Include="routes\users.coffee" />
+    <Compile Include="routes\account.coffee" />
     <Compile Include="bin\www" />
     <Content Include="routes\db_models\oauth_access_token.coffee" />
     <Content Include="routes\db_models\oauth_client.coffee" />
@@ -45,6 +44,7 @@
     <Content Include="README.md" />
     <Content Include="routes\models\response.coffee" />
     <Content Include="routes\public_user.coffee" />
+    <Content Include="routes\users.coffee" />
     <Content Include="views\index.jade" />
     <Content Include="views\layout.jade" />
     <Content Include="views\error.jade" />

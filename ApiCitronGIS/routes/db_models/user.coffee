@@ -16,18 +16,18 @@ User = Schema.define 'User',
         creationDate: { type: Date, default: () -> return new Date }
 
 User.attributes = [
-        { name: 'username', create: false, update: true }
-        { name: 'email', create: true, update: false }
-        { name: 'password', create: true, update: true }
-        { name: 'firstname', create: false, update: true }
-        { name: 'lastname', create: false, update: true }
-        { name: 'dateOfBirth', create: false, update: true }
-        { name: 'language', create: false, update: true }
-        { name: 'profileType', create: false, update: true }
-        { name: 'phoneNumber', create: false, update: true }
-        { name: 'location', create: false, update: true }
-        { name: 'picture', create: false, update: true }
-        { name: 'job', create: false, update: true }
+        { name: 'username', create: false, update: true, private: false }
+        { name: 'email', create: true, update: false, private: false }
+        { name: 'password', create: true, update: true, private: true }
+        { name: 'firstname', create: false, update: true, private: false }
+        { name: 'lastname', create: false, update: true, private: false }
+        { name: 'dateOfBirth', create: false, update: true, private: false }
+        { name: 'language', create: false, update: true, private: false }
+        { name: 'profileType', create: false, update: true, private: false }
+        { name: 'phoneNumber', create: false, update: true, private: false }
+        { name: 'location', create: false, update: true, private: false }
+        { name: 'picture', create: false, update: true, private: false }
+        { name: 'job', create: false, update: true, private: false }
 ]
 
 User.validatesUniquenessOf('email', { message: 'Email already used' });
