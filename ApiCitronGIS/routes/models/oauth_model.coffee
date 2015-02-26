@@ -5,10 +5,7 @@ User = require '../db_models/user'
 AuthAccessToken = require '../db_models/oauth_access_token'
 
 module.exports.getClient = (clientId, clientSecret, callback) ->
-    Client.findOne {
-        client_id: clientId,
-        client_secret: clientSecret
-    }, callback
+    Client.findOne { where: { clientId: clientId, clientSecret: clientSecret } }, callback
 
 module.exports.grantTypeAllowed = (clientId, grantType, callback) ->
     callback false, true
