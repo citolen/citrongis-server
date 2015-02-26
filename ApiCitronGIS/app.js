@@ -40,12 +40,12 @@ if (app.get('env') === 'development') {
 
 // Begin public routes
 app.all('/auth/login', oauth_model.detectIP, app.oauth.grant());
-app.use('/auth', require('./routes/public_user'));
+app.use('/auth', require('./routes/public_users'));
 // End public routes
 
 // Ask autorisation
 app.use(app.oauth.authorise());
-app.use(require('./routes/account').completMyInformation);
+app.use(require('./routes/accounts').completMyInformation);
 
 // Download
 app.use(express.static(path.join(__dirname, 'public')));
@@ -54,7 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use(multer({ dest: './public/uploads/' }));
 
 // Begin private routes
-app.use('/account', require('./routes/account'));
+app.use('/account', require('./routes/accounts'));
 app.use('/users', require('./routes/users'));
 // End private routes
 
