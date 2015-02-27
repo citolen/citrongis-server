@@ -12,8 +12,9 @@ User = Schema.define 'User',
         phoneNumber: { type: String, length: 15 }
         location: { type: String, length: 25 }
         picture: { type: String, length: 255 }
-        job: Object
+        job: String
         creationDate: { type: Date, default: () -> return new Date }
+        compagnyName: String
 
 User.attributes = [
         { name: 'username', create: false, update: true, private: false }
@@ -28,6 +29,7 @@ User.attributes = [
         { name: 'location', create: false, update: true, private: false }
         { name: 'picture', create: false, update: true, private: false }
         { name: 'job', create: false, update: true, private: false }
+        { name: 'compagnyName', create: false, update: true, private: false }
 ]
 
 User.validatesUniquenessOf('email', { message: 'Email already used' });

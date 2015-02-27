@@ -27,7 +27,7 @@ module.exports.saveAccessToken = (accessToken, clientId, expires, user, callback
     , callback
 
 module.exports.getAccessToken = (bearerToken, callback) ->
-    AuthAccessToken.findOne {accessToken: bearerToken}, (err, token) ->
+    AuthAccessToken.findOne { where: {accessToken: bearerToken} }, (err, token) ->
         callback err, token
 
 module.exports.detectIP = (req, res, next) ->

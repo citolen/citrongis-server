@@ -5,7 +5,7 @@ response = require './models/response'
 
 router = express.Router()
 
-router.post '/getUser', (req, res, next) ->
+router.post '/get', (req, res, next) ->
     data = {}
     for key in User.attributes
         if req.body[key.name]? and key.private is false
