@@ -17,18 +17,18 @@ User = Schema.define 'User',
         compagnyName: String
 
 User.attributes = [
-        { name: 'username', create: false, update: true, private: false }
-        { name: 'email', create: true, update: false, private: false }
-        { name: 'password', create: true, update: true, private: true }
-        { name: 'firstname', create: false, update: true, private: false }
-        { name: 'lastname', create: false, update: true, private: false }
-        { name: 'dateOfBirth', create: false, update: true, private: false }
-        { name: 'language', create: false, update: true, private: false }
-        { name: 'profileType', create: false, update: true, private: false }
-        { name: 'phoneNumber', create: false, update: true, private: false }
-        { name: 'location', create: false, update: true, private: false }
-        { name: 'picture', create: false, update: true, private: false }
-        { name: 'job', create: false, update: true, private: false }
+        { name: 'username',     create: false, update: true, private: false }
+        { name: 'email',        create: true, update: false, private: false }
+        { name: 'password',     create: true, update: true, private: true }
+        { name: 'firstname',    create: false, update: true, private: false }
+        { name: 'lastname',     create: false, update: true, private: false }
+        { name: 'dateOfBirth',  create: false, update: true, private: false }
+        { name: 'language',     create: false, update: true, private: false }
+        { name: 'profileType',  create: false, update: true, private: false }
+        { name: 'phoneNumber',  create: false, update: true, private: false }
+        { name: 'location',     create: false, update: true, private: false }
+        { name: 'picture',      create: false, update: true, private: false }
+        { name: 'job',          create: false, update: true, private: false }
         { name: 'compagnyName', create: false, update: true, private: false }
 ]
 

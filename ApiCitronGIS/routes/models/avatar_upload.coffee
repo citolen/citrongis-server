@@ -2,6 +2,8 @@
 easyimage = require 'easyimage'
 fs = require 'fs'
 
+Upload = require './upload'
+
 mul = multer { dest:"public/images" }
 format = ['png', 'jpg', 'jpeg', 'gif', 'bmp']
 img_resize_width = 200
@@ -22,4 +24,4 @@ ResizeImage = (req, res, next) ->
         next?()
 
 module.exports.file = mul
-module.exports.image = [ mul, ResizeImage ]
+module.exports.image = [ mul, Upload.removeWrongFiles('picture'), ResizeImage ]

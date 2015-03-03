@@ -33,10 +33,12 @@
     <Compile Include="app.js" />
     <Compile Include="routes\accounts.coffee" />
     <Compile Include="bin\www" />
+    <Content Include="routes\db_models\extension.coffee" />
     <Content Include="routes\db_models\oauth_access_token.coffee" />
     <Content Include="routes\db_models\oauth_client.coffee" />
     <Content Include="routes\db_models\schema.coffee" />
     <Content Include="routes\db_models\user.coffee" />
+    <Content Include="routes\extensions.coffee" />
     <Content Include="routes\models\avatar_upload.coffee" />
     <Content Include="routes\models\model_tools.coffee" />
     <Content Include="routes\models\oauth_model.coffee" />
@@ -44,6 +46,7 @@
     <Content Include="public\stylesheets\style.styl" />
     <Content Include="README.md" />
     <Content Include="routes\models\response.coffee" />
+    <Content Include="routes\models\upload.coffee" />
     <Content Include="routes\public_users.coffee" />
     <Content Include="routes\users.coffee" />
     <Content Include="views\index.jade" />

@@ -50,12 +50,10 @@ app.use(require('./routes/accounts').completMyInformation);
 // Download
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Upload -> Uniquement route upload
-//app.use(multer({ dest: './public/uploads/' }));
-
 // Begin private routes
 app.use('/account', require('./routes/accounts'));
 app.use('/users', require('./routes/users'));
+app.use('/extensions', require('./routes/extensions'));
 // End private routes
 
 // catch 404 and forward to error handler
@@ -87,5 +85,6 @@ app.use(function (err, req, res, next) {
     res.send({ message: "An error occured" });
 });
 
+var e = require('./routes/db_models/extension');
 
 module.exports = app;
