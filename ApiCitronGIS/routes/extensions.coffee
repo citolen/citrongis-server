@@ -2,6 +2,7 @@
 fs = require 'fs'
 multer = require 'multer'
 JSZip = require 'jszip'
+mkdirp = require 'mkdirp'
 
 Response = require './models/response'
 Model_tools = require './models/model_tools'
@@ -9,6 +10,14 @@ Upload = require './models/upload'
 Extension = require './db_models/extension'
 
 router = express.Router()
+
+moveExtensions = (path, ext, callback) ->
+    directory = 'public/extensions/' + ext.name + '/' + ext.version
+    mkdirp directory, (err) ->
+        throw err if err
+        fs.rename path, directory + '/file.zip', (err) ->
+            throw err if err
+            callback()
 
 router.post '/upload', multer({ dest: "public/extensions" }), Upload.removeWrongFiles('file'), (req, res, next) ->
     return Response.usageErrors "zip file not found", res if not req.files.file?
@@ -27,14 +36,17 @@ router.post '/upload', multer({ dest: "public/extensions" }), Upload.removeWrong
         pack.isAvailable = true
         Extension.all { where: { name: pack.name } }, (err, value) ->
             throw err if err
-            if value.length > 0 && value[0].owner_id.toString() == req.user.id.toString()
-                for item in value
-                    return Response.simpleErrors "Extensions exist", 8, res if item.version == pack.version
-                Extension.create pack, (err) ->
-                    throw err if err
+            if value.length > 0 and value[0].owner_id.toString() != req.user.id.toString()
+                fs.unlink req.files.file.path, (err) ->
+                return Response.simpleErrors "Upload not allowed", 9, res
+            for item in value
+                if item.version == pack.version
+                    fs.unlink req.files.file.path, (err) ->
+                    return Response.simpleErrors "Extensions exist", 8, res
+            Extension.create pack, (err, ext) ->
+                throw err if err
+                moveExtensions req.files.file.path, ext, () ->
                     Response.success "Success", res
-            else
-                Response.simpleErrors "Upload not allowed", 9, res
 
 router.get '/getInfos/:name/:version', (req, res, next) ->
     Extension.findOne { where: { name: req.params.name, version: req.params.version } }, (err, ext) ->
