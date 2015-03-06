@@ -1,1 +1,0 @@
-echo dev | sudo -S apt-get -y install build-essential
