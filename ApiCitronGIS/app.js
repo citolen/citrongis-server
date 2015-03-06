@@ -10,33 +10,32 @@ require('coffee-script/register');
 
 var app = express();
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(require('stylus').middleware(path.join(__dirname, 'public')));
-// app.use(express.static(path.join(__dirname, 'public')));
+
 
 var oauth_model = require('./routes/models/oauth_model');
-app.oauth = oauthserver({
+var oauth_configuration = {
     model: oauth_model,
-    grants: ['password'],
-    debug: true
-});
+    grants: ['password', 'refresh_token'],
+    debug: false,
+    accessTokenLifetime: 3600
+}
 
-// Print body
 if (app.get('env') === 'development') {
+    // Print body
     app.use(function (req, res, next) {
         debug(req.body);
         next();
     });
+    // Set Oauth debug on
+    oauth_configuration.debug = true;
 }
+
+// Set up Oauth
+app.oauth = oauthserver(oauth_configuration);
 
 // Begin public routes
 app.all('/auth/login', oauth_model.detectIP, app.oauth.grant());
@@ -64,6 +63,7 @@ app.use(function (req, res, next) {
 });
 
 // error handlers
+app.use(app.oauth.errorHandler());
 
 // development error handler
 // will print stacktrace

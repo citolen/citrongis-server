@@ -36,6 +36,7 @@
     <Content Include="routes\db_models\extension.coffee" />
     <Content Include="routes\db_models\oauth_access_token.coffee" />
     <Content Include="routes\db_models\oauth_client.coffee" />
+    <Content Include="routes\db_models\oauth_refresh_token.coffee" />
     <Content Include="routes\db_models\schema.coffee" />
     <Content Include="routes\db_models\user.coffee" />
     <Content Include="routes\extensions.coffee" />
