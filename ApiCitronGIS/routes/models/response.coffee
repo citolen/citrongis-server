@@ -5,13 +5,13 @@ module.exports.success = (data, res) ->
         data: data
 
 module.exports.usageErrors = (error, res) ->
-    res.status 400
+    res.status 200
     res.send
         code: 5
         error: error
 
 module.exports.simpleErrors = (error, code, res) ->
-    res.status 400    
+    res.status 200    
     res.send
         code: code
         error: error
