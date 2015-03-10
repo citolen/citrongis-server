@@ -38,7 +38,16 @@ if (app.get('env') === 'development') {
 app.oauth = oauthserver(oauth_configuration);
 
 // Begin public routes
-app.all('/auth/login', oauth_model.detectIP, app.oauth.grant());
+app.all('/auth/login', function (req, res, next) {
+    req.header('Content-Type', 'application/x-www-form-urlencoded');
+    next();
+}, function (req, res, next) {
+    // Pas beau tout moche, a remplacer
+    if (req.headers['content-type']) {
+        req.headers['content-type'] = req.headers['content-type'].toLowerCase().replace('application/json', 'application/x-www-form-urlencoded');
+    }
+    next();
+}, oauth_model.detectIP, app.oauth.grant());
 app.use('/auth', require('./routes/public_users'));
 // End public routes
 
