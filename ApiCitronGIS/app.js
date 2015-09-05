@@ -16,11 +16,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(cors({
-    allowedOrigins: [
-        '*'
-    ]
-}));
+app.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 
 var oauth_model = require('./routes/models/oauth_model');
 var oauth_configuration = {
