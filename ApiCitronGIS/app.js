@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var oauthserver = require('node-oauth2-server');
 var debug = require('debug')('ApiCitronGIS');
+var cors = require('express-cors');
 require('coffee-script/register');
 
 var app = express();
@@ -15,6 +16,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use(cors({
+    allowedOrigins: [
+        '*'
+    ]
+}));
 
 var oauth_model = require('./routes/models/oauth_model');
 var oauth_configuration = {
@@ -22,7 +28,7 @@ var oauth_configuration = {
     grants: ['password', 'refresh_token'],
     debug: false,
     accessTokenLifetime: 3600
-}
+};
 
 if (app.get('env') === 'development') {
     // Print body
