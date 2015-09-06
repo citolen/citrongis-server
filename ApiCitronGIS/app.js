@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var oauthserver = require('node-oauth2-server');
 var debug = require('debug')('ApiCitronGIS');
-var cors = require('express-cors');
+var cors = require('cors');
 require('coffee-script/register');
 
 var app = express();
@@ -22,12 +22,14 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(function(req, res, next) {
+app.use(cors());
+/*app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     res.header("Access-Control-Allow-Methods", "*");
     next();
 });
+*/
 
 var oauth_model = require('./routes/models/oauth_model');
 var oauth_configuration = {
